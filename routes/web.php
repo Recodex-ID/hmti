@@ -12,6 +12,9 @@ Route::get('/dashboard', \App\Livewire\Dashboard::class)
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    // Department Management Routes
+    Route::get('/departments', \App\Livewire\ManageDepartments::class)->name('departments');
+
     // Administrator Routes
     Route::middleware(['role:Super Admin'])->prefix('administrator')->name('admin.')->group(function () {
         Route::get('/users', \App\Livewire\Administrator\ManageUsers::class)->name('users');

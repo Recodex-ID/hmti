@@ -16,6 +16,10 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
 
+                <flux:navlist.group :heading="__('Management')" class="grid">
+                    <flux:navlist.item icon="building-office" :href="route('departments')" :current="request()->routeIs('departments')" wire:navigate>Departemen & Biro</flux:navlist.item>
+                </flux:navlist.group>
+
                 @role('Super Admin')
                 <flux:navlist.group :heading="__('Administrator')" class="grid">
                     <flux:navlist.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>Manage Users</flux:navlist.item>
