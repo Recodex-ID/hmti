@@ -18,6 +18,9 @@ Route::middleware(['auth'])->group(function () {
     // Community Management Routes
     Route::get('/communities', \App\Livewire\ManageCommunities::class)->name('communities');
     
+    // Core Management Routes
+    Route::get('/cores', \App\Livewire\ManageCores::class)->name('cores');
+    
     // About Management Routes
     Route::get('/about', \App\Livewire\ManageAbout::class)->name('about');
 

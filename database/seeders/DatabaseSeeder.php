@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             CommunitySeeder::class,
             AboutSeeder::class,
+            CoreSeeder::class,
         ]);
     }
 }
