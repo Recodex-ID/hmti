@@ -14,6 +14,9 @@ Route::get('/dashboard', \App\Livewire\Dashboard::class)
 Route::middleware(['auth'])->group(function () {
     // Department Management Routes
     Route::get('/departments', \App\Livewire\ManageDepartments::class)->name('departments');
+    
+    // Community Management Routes
+    Route::get('/communities', \App\Livewire\ManageCommunities::class)->name('communities');
 
     // Administrator Routes
     Route::middleware(['role:Super Admin'])->prefix('administrator')->name('admin.')->group(function () {

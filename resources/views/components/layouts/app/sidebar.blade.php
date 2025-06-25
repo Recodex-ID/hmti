@@ -18,6 +18,7 @@
 
                 <flux:navlist.group :heading="__('Management')" class="grid">
                     <flux:navlist.item icon="building-office" :href="route('departments')" :current="request()->routeIs('departments')" wire:navigate>Departemen & Biro</flux:navlist.item>
+                    <flux:navlist.item icon="user-group" :href="route('communities')" :current="request()->routeIs('communities')" wire:navigate>Community & Committee</flux:navlist.item>
                 </flux:navlist.group>
 
                 @role('Super Admin')
