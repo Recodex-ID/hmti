@@ -26,6 +26,7 @@ class AboutSeeder extends Seeder
             ],
 
             'structural' => 'about/organizational-structure.png',
+            'ad_art' => 'about/ad-art/hmti-ad-art-2024.pdf',
         ]);
     }
 }

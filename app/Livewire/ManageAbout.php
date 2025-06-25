@@ -17,6 +17,7 @@ class ManageAbout extends Component
     public $vision = '';
     public $mission = [];
     public $structural;
+    public $ad_art;
     public $missionInput = '';
 
     public function mount()
@@ -33,6 +34,7 @@ class ManageAbout extends Component
             'mission' => 'required|array|min:1',
             'mission.*' => 'required|string',
             'structural' => 'nullable|image|max:2048',
+            'ad_art' => 'nullable|file|mimes:pdf|max:5120', // 5MB max for PDF
         ];
     }
 
@@ -54,6 +56,7 @@ class ManageAbout extends Component
         }
 
         $this->structural = null;
+        $this->ad_art = null;
     }
 
 
@@ -90,6 +93,14 @@ class ManageAbout extends Component
                 Storage::delete($existingAbout->structural);
             }
             $aboutData['structural'] = $this->structural->store('about', 'public');
+        }
+
+        if ($this->ad_art) {
+            $existingAbout = About::current();
+            if ($existingAbout && $existingAbout->ad_art) {
+                Storage::delete($existingAbout->ad_art);
+            }
+            $aboutData['ad_art'] = $this->ad_art->store('about/ad-art', 'public');
         }
 
         $about = About::current();

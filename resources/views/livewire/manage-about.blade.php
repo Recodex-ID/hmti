@@ -77,6 +77,36 @@
                     @endif
                 </flux:field>
 
+                <flux:field>
+                    <flux:label>AD/ART (Anggaran Dasar/Anggaran Rumah Tangga)</flux:label>
+                    <flux:input type="file" wire:model="ad_art" accept=".pdf" />
+                    <flux:error name="ad_art" />
+                    <flux:description>
+                        Upload file AD/ART dalam format PDF (maksimal 5MB)
+                    </flux:description>
+                    @if($ad_art)
+                        <div class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <flux:icon name="document-text" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <span class="text-sm text-blue-700 dark:text-blue-300">{{ $ad_art->getClientOriginalName() }}</span>
+                            </div>
+                        </div>
+                    @elseif($this->about->hasAdArt())
+                        <div class="mt-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <flux:icon name="document-text" class="w-5 h-5 text-green-600 dark:text-green-400" />
+                                    <span class="text-sm text-green-700 dark:text-green-300">{{ $this->about->ad_art_filename }}</span>
+                                </div>
+                                <a href="{{ $this->about->ad_art_url }}" target="_blank" class="text-sm text-green-600 dark:text-green-400 hover:underline">
+                                    Lihat PDF
+                                </a>
+                            </div>
+                            <flux:text size="sm" class="text-green-600 dark:text-green-400 mt-1">File AD/ART saat ini</flux:text>
+                        </div>
+                    @endif
+                </flux:field>
+
                 <div class="flex gap-2">
                     <flux:spacer />
 

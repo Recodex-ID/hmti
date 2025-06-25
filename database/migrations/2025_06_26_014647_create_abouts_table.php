@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('vision');
             $table->json('mission');
             $table->string('structural'); // image
+            $table->string('ad_art')->nullable(); // PDF file
             $table->timestamps();
         });
     }

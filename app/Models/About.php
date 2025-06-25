@@ -18,6 +18,7 @@ class About extends Model
         'vision',
         'mission',
         'structural',
+        'ad_art',
     ];
 
     /**
@@ -111,5 +112,29 @@ class About extends Model
     public function hasMissions(): bool
     {
         return is_array($this->mission) && count($this->mission) > 0;
+    }
+
+    /**
+     * Get the AD/ART PDF URL.
+     */
+    public function getAdArtUrlAttribute(): ?string
+    {
+        return $this->ad_art ? Storage::url($this->ad_art) : null;
+    }
+
+    /**
+     * Check if about has AD/ART PDF.
+     */
+    public function hasAdArt(): bool
+    {
+        return !empty($this->ad_art);
+    }
+
+    /**
+     * Get AD/ART filename for display.
+     */
+    public function getAdArtFilenameAttribute(): ?string
+    {
+        return $this->ad_art ? basename($this->ad_art) : null;
     }
 }
