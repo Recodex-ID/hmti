@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Department;
+use App\Models\DepartmentFunction;
+use App\Models\WorkProgram;
+use App\Models\Agenda;
+use App\Models\Member;
 use Illuminate\Database\Seeder;
 
 class DepartmentSeeder extends Seeder
@@ -69,8 +73,95 @@ class DepartmentSeeder extends Seeder
             ],
         ];
 
-        foreach ($departments as $department) {
-            Department::create($department);
+        foreach ($departments as $departmentData) {
+            $department = Department::create($departmentData);
+            
+            // Create sample functions for each department
+            $functions = [
+                'Koordinasi Tim',
+                'Perencanaan Program',
+                'Evaluasi Kinerja'
+            ];
+            
+            foreach ($functions as $functionTitle) {
+                DepartmentFunction::create([
+                    'department_id' => $department->id,
+                    'title' => $functionTitle
+                ]);
+            }
+            
+            // Create sample work programs
+            $workPrograms = [
+                [
+                    'title' => 'Program Pengembangan ' . $department->title,
+                    'description' => 'Program pengembangan dan peningkatan kualitas ' . strtolower($department->title)
+                ],
+                [
+                    'title' => 'Program Pelatihan ' . $department->title,
+                    'description' => 'Program pelatihan dan capacity building untuk anggota ' . strtolower($department->title)
+                ]
+            ];
+            
+            foreach ($workPrograms as $programData) {
+                WorkProgram::create([
+                    'department_id' => $department->id,
+                    'title' => $programData['title'],
+                    'description' => $programData['description']
+                ]);
+            }
+            
+            // Create sample agendas
+            $agendas = [
+                [
+                    'title' => 'Rapat Koordinasi ' . $department->title,
+                    'description' => 'Rapat koordinasi rutin untuk evaluasi dan perencanaan program'
+                ],
+                [
+                    'title' => 'Workshop ' . $department->title,
+                    'description' => 'Workshop peningkatan kapasitas anggota departemen'
+                ]
+            ];
+            
+            foreach ($agendas as $agendaData) {
+                Agenda::create([
+                    'department_id' => $department->id,
+                    'title' => $agendaData['title'],
+                    'description' => $agendaData['description']
+                ]);
+            }
+            
+            // Create sample members
+            $members = [
+                [
+                    'name' => 'Kepala ' . $department->title,
+                    'position' => 'head',
+                    'start_year' => 2024,
+                    'end_year' => null
+                ],
+                [
+                    'name' => 'Staff ' . $department->title . ' 1',
+                    'position' => 'staff',
+                    'start_year' => 2024,
+                    'end_year' => null
+                ],
+                [
+                    'name' => 'Staff ' . $department->title . ' 2',
+                    'position' => 'staff',
+                    'start_year' => 2023,
+                    'end_year' => 2024
+                ]
+            ];
+            
+            foreach ($members as $memberData) {
+                Member::create([
+                    'department_id' => $department->id,
+                    'name' => $memberData['name'],
+                    'position' => $memberData['position'],
+                    'photo' => null,
+                    'start_year' => $memberData['start_year'],
+                    'end_year' => $memberData['end_year']
+                ]);
+            }
         }
     }
 }

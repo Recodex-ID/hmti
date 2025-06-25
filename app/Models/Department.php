@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class Department extends Model
@@ -91,5 +92,53 @@ class Department extends Model
     public function getLogoUrlAttribute(): ?string
     {
         return $this->logo ? Storage::url($this->logo) : null;
+    }
+
+    /**
+     * Get the functions for the department.
+     */
+    public function departmentFunctions(): HasMany
+    {
+        return $this->hasMany(DepartmentFunction::class);
+    }
+
+    /**
+     * Get the work programs for the department.
+     */
+    public function workPrograms(): HasMany
+    {
+        return $this->hasMany(WorkProgram::class);
+    }
+
+    /**
+     * Get the agendas for the department.
+     */
+    public function agendas(): HasMany
+    {
+        return $this->hasMany(Agenda::class);
+    }
+
+    /**
+     * Get the members for the department.
+     */
+    public function members(): HasMany
+    {
+        return $this->hasMany(Member::class);
+    }
+
+    /**
+     * Get active members for the department.
+     */
+    public function activeMembers(): HasMany
+    {
+        return $this->hasMany(Member::class)->active();
+    }
+
+    /**
+     * Get head members for the department.
+     */
+    public function headMembers(): HasMany
+    {
+        return $this->hasMany(Member::class)->head();
     }
 }
