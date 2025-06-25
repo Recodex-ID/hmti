@@ -322,14 +322,43 @@
                                 <flux:text class="text-zinc-500">Kelola anggota departemen</flux:text>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
-                                <flux:input wire:model="memberName" placeholder="Nama lengkap..." />
-                                <flux:select wire:model="memberPosition" placeholder="Pilih jabatan...">
-                                    <flux:select.option value="head">Kepala</flux:select.option>
-                                    <flux:select.option value="staff">Anggota</flux:select.option>
-                                </flux:select>
-                                <flux:input type="number" wire:model="memberStartYear" placeholder="Tahun mulai..." min="2000" max="{{ (int)date('Y') + 10 }}" />
-                                <flux:input type="number" wire:model="memberEndYear" placeholder="Tahun selesai (opsional)..." min="2000" max="{{ (int)date('Y') + 10 }}" />
+                            <div class="space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <flux:input wire:model="memberName" placeholder="Nama lengkap..." />
+                                    <flux:select wire:model="memberPosition" placeholder="Pilih jabatan...">
+                                        <flux:select.option value="head">Kepala</flux:select.option>
+                                        <flux:select.option value="staff">Anggota</flux:select.option>
+                                    </flux:select>
+                                </div>
+                                
+                                <flux:field>
+                                    <flux:label>Foto Anggota</flux:label>
+                                    <flux:input type="file" wire:model="memberPhoto" accept="image/*" />
+                                    <flux:error name="memberPhoto" />
+                                    <flux:description>
+                                        Upload foto anggota (maksimal 2MB, format: JPG, PNG, GIF)
+                                    </flux:description>
+                                    @if($memberPhoto)
+                                        <div class="mt-2">
+                                            <img src="{{ $memberPhoto->temporaryUrl() }}" alt="Preview" class="w-20 h-20 rounded-lg object-cover">
+                                        </div>
+                                    @elseif($editingMemberId && !empty($members))
+                                        @php
+                                            $currentMember = collect($members)->firstWhere('id', $editingMemberId);
+                                        @endphp
+                                        @if($currentMember && !empty($currentMember['photo']))
+                                            <div class="mt-2">
+                                                <img src="{{ Storage::url($currentMember['photo']) }}" alt="Current Photo" class="w-20 h-20 rounded-lg object-cover">
+                                                <flux:text size="sm" class="text-zinc-500 mt-1">Foto saat ini</flux:text>
+                                            </div>
+                                        @endif
+                                    @endif
+                                </flux:field>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <flux:input type="number" wire:model="memberStartYear" placeholder="Tahun mulai..." min="2000" max="{{ (int)date('Y') + 10 }}" />
+                                    <flux:input type="number" wire:model="memberEndYear" placeholder="Tahun selesai (opsional)..." min="2000" max="{{ (int)date('Y') + 10 }}" />
+                                </div>
                             </div>
                             <flux:button wire:click="addMember" variant="primary" size="sm">{{ $editingMemberId ? 'Perbarui' : 'Tambah' }}</flux:button>
                             <flux:error name="memberName" />
@@ -341,11 +370,22 @@
                                     @foreach($members as $index => $member)
                                         @if(!isset($member['_delete']))
                                             <div class="flex items-center justify-between p-3 border rounded-lg">
-                                                <div>
-                                                    <div class="font-medium">{{ $member['name'] }}</div>
-                                                    <div class="text-sm text-zinc-500">
-                                                        {{ ucfirst($member['position']) }} •
-                                                        {{ $member['start_year'] }} - {{ $member['end_year'] ?? 'Sekarang' }}
+                                                <div class="flex items-center space-x-3">
+                                                    @if(!empty($member['photo']))
+                                                        <img src="{{ isset($member['photo_temp']) ? Storage::url($member['photo']) : (str_starts_with($member['photo'], 'http') ? $member['photo'] : Storage::url($member['photo'])) }}" 
+                                                             alt="{{ $member['name'] }}" 
+                                                             class="w-10 h-10 rounded-full object-cover">
+                                                    @else
+                                                        <div class="w-10 h-10 bg-zinc-200 dark:bg-zinc-700 rounded-full flex items-center justify-center">
+                                                            <flux:icon name="user" class="w-5 h-5 text-zinc-400" />
+                                                        </div>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">{{ $member['name'] }}</div>
+                                                        <div class="text-sm text-zinc-500">
+                                                            {{ ucfirst($member['position']) }} •
+                                                            {{ $member['start_year'] }} - {{ $member['end_year'] ?? 'Sekarang' }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="flex gap-2">

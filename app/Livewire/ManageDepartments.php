@@ -342,14 +342,20 @@ class ManageDepartments extends Component
     // Member management methods
     public function addMember()
     {
-        $this->validateOnly(['memberName', 'memberPosition', 'memberStartYear']);
+        $this->validate([
+            'memberName' => 'required|string|max:255',
+            'memberPosition' => 'required|string|in:head,staff',
+            'memberPhoto' => 'nullable|image|max:2048',
+            'memberStartYear' => 'required|integer|min:2000|max:' . ((int)date('Y') + 10),
+            'memberEndYear' => 'nullable|integer|min:2000|max:' . ((int)date('Y') + 10) . '|gte:memberStartYear',
+        ]);
         
         if (!$this->editingDepartmentId) {
             $this->addError('memberName', 'Simpan departemen terlebih dahulu sebelum menambah anggota.');
             return;
         }
         
-        $this->members[] = [
+        $memberData = [
             'id' => $this->editingMemberId ?: 'new_' . count($this->members),
             'name' => $this->memberName,
             'position' => $this->memberPosition,
@@ -358,6 +364,13 @@ class ManageDepartments extends Component
             'department_id' => $this->editingDepartmentId,
             'is_new' => !$this->editingMemberId
         ];
+        
+        if ($this->memberPhoto) {
+            $memberData['photo'] = $this->memberPhoto->store('members', 'public');
+            $memberData['photo_temp'] = true;
+        }
+        
+        $this->members[] = $memberData;
         
         $this->reset(['memberName', 'memberPosition', 'memberPhoto', 'memberStartYear', 'memberEndYear', 'editingMemberId']);
     }
@@ -369,6 +382,7 @@ class ManageDepartments extends Component
         $this->memberPosition = $member['position'];
         $this->memberStartYear = $member['start_year'];
         $this->memberEndYear = $member['end_year'];
+        $this->memberPhoto = null;
         $this->editingMemberId = $member['id'];
     }
     
@@ -446,23 +460,43 @@ class ManageDepartments extends Component
         foreach ($this->members as $member) {
             if (isset($member['_delete']) && $member['_delete']) {
                 if (!str_starts_with($member['id'], 'new_')) {
-                    Member::find($member['id'])?->delete();
+                    $existingMember = Member::find($member['id']);
+                    if ($existingMember && $existingMember->photo) {
+                        Storage::delete($existingMember->photo);
+                    }
+                    $existingMember?->delete();
                 }
             } elseif (isset($member['is_new']) && $member['is_new']) {
-                Member::create([
+                $memberData = [
                     'department_id' => $departmentId,
                     'name' => $member['name'],
                     'position' => $member['position'],
                     'start_year' => $member['start_year'],
                     'end_year' => $member['end_year']
-                ]);
+                ];
+                
+                if (isset($member['photo'])) {
+                    $memberData['photo'] = $member['photo'];
+                }
+                
+                Member::create($memberData);
             } elseif (!str_starts_with($member['id'], 'new_')) {
-                Member::find($member['id'])?->update([
+                $memberData = [
                     'name' => $member['name'],
                     'position' => $member['position'],
                     'start_year' => $member['start_year'],
                     'end_year' => $member['end_year']
-                ]);
+                ];
+                
+                if (isset($member['photo'])) {
+                    $existingMember = Member::find($member['id']);
+                    if ($existingMember && $existingMember->photo && $existingMember->photo !== $member['photo']) {
+                        Storage::delete($existingMember->photo);
+                    }
+                    $memberData['photo'] = $member['photo'];
+                }
+                
+                Member::find($member['id'])?->update($memberData);
             }
         }
     }
