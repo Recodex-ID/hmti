@@ -21,6 +21,9 @@ Route::middleware(['auth'])->group(function () {
     // Core Management Routes
     Route::get('/cores', \App\Livewire\ManageCores::class)->name('cores');
     
+    // Hero Management Routes
+    Route::get('/heroes', \App\Livewire\ManageHeroes::class)->name('heroes');
+    
     // About Management Routes
     Route::get('/about', \App\Livewire\ManageAbout::class)->name('about');
 
