@@ -17,6 +17,9 @@ Route::middleware(['auth'])->group(function () {
     
     // Community Management Routes
     Route::get('/communities', \App\Livewire\ManageCommunities::class)->name('communities');
+    
+    // About Management Routes
+    Route::get('/about', \App\Livewire\ManageAbout::class)->name('about');
 
     // Administrator Routes
     Route::middleware(['role:Super Admin'])->prefix('administrator')->name('admin.')->group(function () {
