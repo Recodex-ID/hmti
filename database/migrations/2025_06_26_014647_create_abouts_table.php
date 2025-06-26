@@ -17,7 +17,9 @@ return new class extends Migration
             $table->text('position_role');
             $table->text('vision');
             $table->json('mission');
-            $table->string('structural'); // image
+            $table->string('structural'); // organizational structure image
+            $table->string('banner')->nullable(); // banner image
+            $table->string('link_youtube')->nullable(); // YouTube link
             $table->string('ad_art')->nullable(); // PDF file
             $table->timestamps();
         });

@@ -18,6 +18,8 @@ class About extends Model
         'vision',
         'mission',
         'structural',
+        'banner',
+        'link_youtube',
         'ad_art',
     ];
 
@@ -136,5 +138,64 @@ class About extends Model
     public function getAdArtFilenameAttribute(): ?string
     {
         return $this->ad_art ? basename($this->ad_art) : null;
+    }
+
+    /**
+     * Get the banner image URL.
+     */
+    public function getBannerUrlAttribute(): ?string
+    {
+        return $this->banner ? Storage::url($this->banner) : null;
+    }
+
+    /**
+     * Check if about has banner image.
+     */
+    public function hasBanner(): bool
+    {
+        return !empty($this->banner);
+    }
+
+    /**
+     * Check if about has YouTube link.
+     */
+    public function hasYoutubeLink(): bool
+    {
+        return !empty($this->link_youtube);
+    }
+
+    /**
+     * Get YouTube video ID from URL.
+     */
+    public function getYoutubeVideoIdAttribute(): ?string
+    {
+        if (!$this->link_youtube) {
+            return null;
+        }
+
+        // Extract video ID from various YouTube URL formats
+        preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $this->link_youtube, $matches);
+        
+        return $matches[1] ?? null;
+    }
+
+    /**
+     * Get YouTube embed URL.
+     */
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        $videoId = $this->youtube_video_id;
+        
+        return $videoId ? "https://www.youtube.com/embed/{$videoId}" : null;
+    }
+
+    /**
+     * Get YouTube thumbnail URL.
+     */
+    public function getYoutubeThumbnailUrlAttribute(): ?string
+    {
+        $videoId = $this->youtube_video_id;
+        
+        return $videoId ? "https://img.youtube.com/vi/{$videoId}/maxresdefault.jpg" : null;
     }
 }

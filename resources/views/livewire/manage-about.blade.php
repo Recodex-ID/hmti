@@ -78,6 +78,55 @@
                 </flux:field>
 
                 <flux:field>
+                    <flux:label>Banner</flux:label>
+                    <flux:input type="file" wire:model="banner" accept="image/*" />
+                    <flux:error name="banner" />
+                    <flux:description>
+                        Upload gambar banner (maksimal 2MB, format: JPG, PNG, GIF)
+                    </flux:description>
+                    @if($banner)
+                        <div class="mt-2">
+                            <img src="{{ $banner->temporaryUrl() }}" alt="Preview" class="max-w-xs h-auto rounded-lg object-cover">
+                        </div>
+                    @elseif($this->about->hasBanner())
+                        <div class="mt-2">
+                            <img src="{{ $this->about->banner_url }}" alt="Current Banner" class="max-w-xs h-auto rounded-lg object-cover">
+                            <flux:text size="sm" class="text-zinc-500 mt-1">Gambar banner saat ini</flux:text>
+                        </div>
+                    @endif
+                </flux:field>
+
+                <flux:field>
+                    <flux:label>Link YouTube</flux:label>
+                    <flux:input wire:model="link_youtube" placeholder="https://www.youtube.com/watch?v=..." />
+                    <flux:error name="link_youtube" />
+                    <flux:description>
+                        Masukkan URL video YouTube tentang himpunan
+                    </flux:description>
+                    @if($link_youtube)
+                        <div class="mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <flux:icon name="video-camera" class="w-5 h-5 text-red-600 dark:text-red-400" />
+                                <span class="text-sm text-red-700 dark:text-red-300">{{ $link_youtube }}</span>
+                            </div>
+                        </div>
+                    @elseif($this->about->hasYoutubeLink())
+                        <div class="mt-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <flux:icon name="video-camera" class="w-5 h-5 text-green-600 dark:text-green-400" />
+                                    <span class="text-sm text-green-700 dark:text-green-300">{{ $this->about->link_youtube }}</span>
+                                </div>
+                                <a href="{{ $this->about->link_youtube }}" target="_blank" class="text-sm text-green-600 dark:text-green-400 hover:underline">
+                                    Buka Video
+                                </a>
+                            </div>
+                            <flux:text size="sm" class="text-green-600 dark:text-green-400 mt-1">Link YouTube saat ini</flux:text>
+                        </div>
+                    @endif
+                </flux:field>
+
+                <flux:field>
                     <flux:label>AD/ART (Anggaran Dasar/Anggaran Rumah Tangga)</flux:label>
                     <flux:input type="file" wire:model="ad_art" accept=".pdf" />
                     <flux:error name="ad_art" />

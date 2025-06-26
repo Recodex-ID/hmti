@@ -17,6 +17,8 @@ class ManageAbout extends Component
     public $vision = '';
     public $mission = [];
     public $structural;
+    public $banner;
+    public $link_youtube = '';
     public $ad_art;
     public $missionInput = '';
 
@@ -34,6 +36,8 @@ class ManageAbout extends Component
             'mission' => 'required|array|min:1',
             'mission.*' => 'required|string',
             'structural' => 'nullable|image|max:2048',
+            'banner' => 'nullable|image|max:2048',
+            'link_youtube' => 'nullable|url',
             'ad_art' => 'nullable|file|mimes:pdf|max:5120', // 5MB max for PDF
         ];
     }
@@ -53,9 +57,11 @@ class ManageAbout extends Component
             $this->position_role = $about->position_role ?? '';
             $this->vision = $about->vision ?? '';
             $this->mission = $about->mission ?? [];
+            $this->link_youtube = $about->link_youtube ?? '';
         }
 
         $this->structural = null;
+        $this->banner = null;
         $this->ad_art = null;
     }
 
@@ -85,6 +91,7 @@ class ManageAbout extends Component
             'position_role' => $this->position_role,
             'vision' => $this->vision,
             'mission' => $this->mission,
+            'link_youtube' => $this->link_youtube,
         ];
 
         if ($this->structural) {
@@ -93,6 +100,14 @@ class ManageAbout extends Component
                 Storage::delete($existingAbout->structural);
             }
             $aboutData['structural'] = $this->structural->store('about', 'public');
+        }
+
+        if ($this->banner) {
+            $existingAbout = About::current();
+            if ($existingAbout && $existingAbout->banner) {
+                Storage::delete($existingAbout->banner);
+            }
+            $aboutData['banner'] = $this->banner->store('about', 'public');
         }
 
         if ($this->ad_art) {
