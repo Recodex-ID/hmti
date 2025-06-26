@@ -1,247 +1,156 @@
-<x-layouts.main title="Welcome to Laravel">
-    <!-- Hero Section -->
-    <div class="text-center py-12">
-        <flux:heading size="xl" class="text-zinc-900 dark:text-white mb-4">
-            Welcome to Laravel
-        </flux:heading>
-        <flux:subheading class="text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto">
-            Build modern web applications with Laravel, Livewire, and Flux UI components.
-            This is a CRUD application starter with best practices built-in.
-        </flux:subheading>
+<x-layouts.main title="Home | HMTI Telkom University">
+    <!-- Hero Section with Carousel -->
+    <div x-data="{
+    activeSlide: 0,
+    slides: [
+        {
+            image: '{{ asset('images/gedung.jpg') }}',
+            title: 'Industrial Engineering Student Association',
+            subtitle: 'Building the future engineers of tomorrow'
+        },
+        {
+            image: 'https://picsum.photos/id/2/1920/1080',
+            title: 'Join Our Community',
+            subtitle: 'Connect with fellow students and industry professionals'
+        },
+        {
+            image: 'https://picsum.photos/id/3/1920/1080',
+            title: 'Excellence in Engineering',
+            subtitle: 'Developing skills, knowledge, and innovation'
+        }
+    ],
+    loop() {
+        setInterval(() => {
+            this.activeSlide = (this.activeSlide + 1) % this.slides.length
+        }, 5000)
+    }
+}"
+         x-init="loop()"
+         class="relative overflow-hidden bg-zinc-900 h-[70vh]">
+        <!-- Slides -->
+        <template x-for="(slide, index) in slides" :key="index">
+            <div x-show="activeSlide === index"
+                 x-transition:enter="transition ease-out duration-500"
+                 x-transition:enter-start="opacity-0 transform scale-105"
+                 x-transition:enter-end="opacity-100 transform scale-100"
+                 x-transition:leave="transition ease-in duration-500"
+                 x-transition:leave-start="opacity-100 transform scale-100"
+                 x-transition:leave-end="opacity-0 transform scale-95"
+                 class="absolute inset-0">
+                <!-- Background image with overlay -->
+                <div class="absolute inset-0 bg-zinc-900/40"></div>
+                <img :src="slide.image" class="h-full w-full object-cover" :alt="slide.title" alt="" src="">
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <flux:button variant="primary" href="#features">
-                <flux:icon.rocket-launch class="size-4" />
-                Get Started
-            </flux:button>
-            <flux:button variant="ghost" href="https://laravel.com/docs" target="_blank">
-                <flux:icon.book-open class="size-4" />
-                Documentation
-            </flux:button>
-        </div>
+                <!-- Text content -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+                        <h1
+                            x-text="slide.title"
+                            class="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-50 mb-4"
+                            x-transition:enter="transition ease-out delay-300 duration-500"
+                            x-transition:enter-start="opacity-0 transform translate-y-4"
+                            x-transition:enter-end="opacity-100 transform translate-y-0">
+                        </h1>
+                        <p
+                            x-text="slide.subtitle"
+                            class="text-lg sm:text-xl text-zinc-50/90 max-w-2xl mx-auto mb-8"
+                            x-transition:enter="transition ease-out delay-500 duration-500"
+                            x-transition:enter-start="opacity-0 transform translate-y-4"
+                            x-transition:enter-end="opacity-100 transform translate-y-0">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </template>
 
-        <!-- AI Credit Badge -->
-        <div class="inline-flex items-center px-4 py-2 bg-white dark:bg-zinc-900 rounded-full shadow-sm border border-orange-200 dark:border-zinc-600">
-            <flux:icon.sparkles class="size-4 mr-2" style="color: rgb(201, 100, 66);" />
-            <flux:text class="text-sm font-medium" style="color: rgb(201, 100, 66);">
-                Crafted with Claude AI
-            </flux:text>
+        <!-- Arrow navigation -->
+        <button @click="activeSlide = (activeSlide - 1 + slides.length) % slides.length" class="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-quarternary/90 p-2 text-zinc-50 hover:bg-quarternary focus:outline-none transition-all duration-300 hover:scale-110">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button @click="activeSlide = (activeSlide + 1) % slides.length" class="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-quarternary/90 p-2 text-zinc-50 hover:bg-quarternary focus:outline-none transition-all duration-300 hover:scale-110">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+
+        <!-- end of carousel container -->
+    </div>
+
+    <!-- Cards section below the carousel (moved outside as a separate section) -->
+    <div class="relative -mt-24 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <a href="#" class="overflow-hidden rounded-lg bg-zinc-50 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border border-zinc-900 dark:border-zinc-200">
+                <div class="w-full h-44 overflow-hidden">
+                    <img src="{{ asset('images/surat_edaran.png') }}" alt="Surat Edaran" class="h-full w-full object-cover">
+                </div>
+            </a>
+
+            <a href="#" class="overflow-hidden rounded-lg bg-zinc-50 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border border-zinc-900 dark:border-zinc-200">
+                <div class="w-full h-44 overflow-hidden">
+                    <img src="{{ asset('images/surat_kegiatan.png') }}" alt="Surat Kegiatan" class="h-full w-full object-cover">
+                </div>
+            </a>
+
+            <a href="#" class="overflow-hidden rounded-lg bg-zinc-50 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border border-zinc-900 dark:border-zinc-200">
+                <div class="w-full h-44 overflow-hidden">
+                    <img src="{{ asset('images/informasi_lomba.png') }}" alt="Informasi Lomba" class="h-full w-full object-cover">
+                </div>
+            </a>
+
+            <a href="#" class="overflow-hidden rounded-lg bg-zinc-50 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border border-zinc-900 dark:border-zinc-200">
+                <div class="w-full h-44 overflow-hidden">
+                    <img src="{{ asset('images/berita.png') }}" alt="Berita" class="h-full w-full object-cover">
+                </div>
+            </a>
         </div>
     </div>
 
-    <!-- Features Section -->
-    <div id="features" class="py-16">
-        <div class="text-center mb-12">
-            <flux:heading size="lg" class="text-zinc-900 dark:text-white mb-4">
-                Features
-            </flux:heading>
-            <flux:subheading class="text-zinc-600 dark:text-zinc-400">
-                Everything you need to build modern web applications
-            </flux:subheading>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Laravel Feature -->
-            <div class="bg-white dark:bg-zinc-900    p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div class="flex items-center mb-4">
-                    <div class="bg-red-100 dark:bg-red-900/20 p-3 rounded-lg mr-4">
-                        <flux:icon.code-bracket class="size-6 text-red-600 dark:text-red-400" />
-                    </div>
-                    <flux:heading size="base" class="text-zinc-900 dark:text-white">
-                        Laravel Framework
-                    </flux:heading>
-                </div>
-                <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    Built on Laravel 12 with modern PHP practices, following the best practices documentation included.
-                </flux:text>
-            </div>
-
-            <!-- Livewire Feature -->
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div class="flex items-center mb-4">
-                    <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded-lg mr-4">
-                        <flux:icon.bolt class="size-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <flux:heading size="base" class="text-zinc-900 dark:text-white">
-                        Livewire 3
-                    </flux:heading>
-                </div>
-                <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    Dynamic interfaces without JavaScript complexity. Includes comprehensive best practices guide.
-                </flux:text>
-            </div>
-
-            <!-- Flux UI Feature -->
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div class="flex items-center mb-4">
-                    <div class="bg-blue-100 dark:bg-blue-900/20 p-3 rounded-lg mr-4">
-                        <flux:icon.sparkles class="size-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <flux:heading size="base" class="text-zinc-900 dark:text-white">
-                        Flux UI
-                    </flux:heading>
-                </div>
-                <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    Beautiful, accessible UI components built specifically for Laravel and Livewire applications.
-                </flux:text>
-            </div>
-
-            <!-- Authentication Feature -->
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div class="flex items-center mb-4">
-                    <div class="bg-green-100 dark:bg-green-900/20 p-3 rounded-lg mr-4">
-                        <flux:icon.shield-check class="size-6 text-green-600 dark:text-green-400" />
-                    </div>
-                    <flux:heading size="base" class="text-zinc-900 dark:text-white">
-                        Authentication
-                    </flux:heading>
-                </div>
-                <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    Complete authentication system with roles and permissions using Spatie Laravel Permission.
-                </flux:text>
-            </div>
-
-            <!-- Testing Feature -->
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div class="flex items-center mb-4">
-                    <div class="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded-lg mr-4">
-                        <flux:icon.bug-ant class="size-6 text-yellow-600 dark:text-yellow-400" />
-                    </div>
-                    <flux:heading size="base" class="text-zinc-900 dark:text-white">
-                        Testing with Pest
-                    </flux:heading>
-                </div>
-                <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    Pre-configured with Pest PHP for elegant testing with a focus on simplicity and readability.
-                </flux:text>
-            </div>
-
-            <!-- Documentation Feature -->
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div class="flex items-center mb-4">
-                    <div class="bg-indigo-100 dark:bg-indigo-900/20 p-3 rounded-lg mr-4">
-                        <flux:icon.document-text class="size-6 text-indigo-600 dark:text-indigo-400" />
-                    </div>
-                    <flux:heading size="base" class="text-zinc-900 dark:text-white">
-                        Best Practices
-                    </flux:heading>
-                </div>
-                <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    Comprehensive documentation covering Laravel, Livewire, and Spatie Permission best practices.
-                </flux:text>
+    <!-- Banner Section -->
+    <section class="py-8 md:py-12 lg:py-16">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center">
+                <img
+                    src="{{ asset('images/banner.png') }}"
+                    alt="Banner"
+                    class="w-full max-w-[1440px] h-auto aspect-[1440/440] object-cover rounded-lg border border-zinc-900"
+                >
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Quick Start Section -->
-    <div class="py-16 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl">
-        <div class="text-center mb-8">
-            <flux:heading size="lg" class="text-zinc-900 dark:text-white mb-4">
-                Quick Start
-            </flux:heading>
-            <flux:subheading class="text-zinc-600 dark:text-zinc-400">
-                Get up and running in minutes
-            </flux:subheading>
-        </div>
+    <!-- Video Profil Section -->
+    <section class="py-8 md:py-12 lg:py-16 bg-zinc-900">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl font-bold text-zinc-50 mb-4">Watch Our Video</h2>
+                <p class="text-2xl text-zinc-50/90 max-w-2xl mx-auto">Learn about our association's history, mission, and impact on industrial engineering students.</p>
+            </div>
 
-        <div class="max-w-4xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm mb-4 inline-block">
-                        <flux:icon.cog class="size-8 text-zinc-600 dark:text-zinc-400" />
-                    </div>
-                    <flux:heading size="sm" class="text-zinc-900 dark:text-white mb-2">
-                        1. Configure
-                    </flux:heading>
-                    <flux:text class="text-zinc-600 dark:text-zinc-400">
-                        Set up your database and environment variables
-                    </flux:text>
+            <div class="max-w-7xl mx-auto">
+                <div class="relative overflow-hidden rounded-lg shadow-2xl aspect-video">
+                    <!-- YouTube embed with responsive iframe -->
+                    <iframe
+                        class="absolute inset-0 w-full h-full"
+                        src="https://www.youtube.com/embed/MkOS0xYa5qY?si=_ZNVQDB72NI-rK0I"
+                        title="THIRTY TWO WONDER YEARS"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
                 </div>
 
-                <div class="text-center">
-                    <div class="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm mb-4 inline-block">
-                        <flux:icon.play class="size-8 text-zinc-600 dark:text-zinc-400" />
-                    </div>
-                    <flux:heading size="sm" class="text-zinc-900 dark:text-white mb-2">
-                        2. Migrate
-                    </flux:heading>
-                    <flux:text class="text-zinc-600 dark:text-zinc-400">
-                        Run migrations and seed your database
-                    </flux:text>
-                </div>
-
-                <div class="text-center">
-                    <div class="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm mb-4 inline-block">
-                        <flux:icon.rocket-launch class="size-8 text-zinc-600 dark:text-zinc-400" />
-                    </div>
-                    <flux:heading size="sm" class="text-zinc-900 dark:text-white mb-2">
-                        3. Build
-                    </flux:heading>
-                    <flux:text class="text-zinc-600 dark:text-zinc-400">
-                        Start building your amazing application
-                    </flux:text>
+                <div class="mt-6 md:mt-8 flex justify-center">
+                    <a href="https://www.youtube.com/@HMTITelkomUniversity" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center space-x-1 md:space-x-2 rounded-full bg-secondary px-4 py-2 md:px-6 md:py-3 text-sm md:text-base text-zinc-50 hover:bg-primary transition">
+                        <svg class="h-4 w-4 md:h-5 md:w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                        </svg>
+                        <span class="whitespace-nowrap">Subscribe to our YouTube channel</span>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Links Section -->
-    <div class="py-16">
-        <div class="text-center mb-8">
-            <flux:heading size="lg" class="text-zinc-900 dark:text-white mb-4">
-                Useful Links
-            </flux:heading>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <flux:link href="https://laravel.com/docs" target="_blank" class="block p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center mb-2">
-                    <flux:icon.book-open class="size-5 text-red-600 dark:text-red-400 mr-2" />
-                    <flux:text class="font-medium text-zinc-900 dark:text-white">
-                        Laravel Docs
-                    </flux:text>
-                </div>
-                <flux:text class="text-sm text-zinc-600 dark:text-zinc-400">
-                    Official Laravel documentation
-                </flux:text>
-            </flux:link>
-
-            <flux:link href="https://livewire.laravel.com" target="_blank" class="block p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center mb-2">
-                    <flux:icon.bolt class="size-5 text-purple-600 dark:text-purple-400 mr-2" />
-                    <flux:text class="font-medium text-zinc-900 dark:text-white">
-                        Livewire Docs
-                    </flux:text>
-                </div>
-                <flux:text class="text-sm text-zinc-600 dark:text-zinc-400">
-                    Livewire documentation
-                </flux:text>
-            </flux:link>
-
-            <flux:link href="https://fluxui.dev" target="_blank" class="block p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center mb-2">
-                    <flux:icon.sparkles class="size-5 text-blue-600 dark:text-blue-400 mr-2" />
-                    <flux:text class="font-medium text-zinc-900 dark:text-white">
-                        Flux UI
-                    </flux:text>
-                </div>
-                <flux:text class="text-sm text-zinc-600 dark:text-zinc-400">
-                    Flux UI component library
-                </flux:text>
-            </flux:link>
-
-            <flux:link href="https://spatie.be/docs/laravel-permission" target="_blank" class="block p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center mb-2">
-                    <flux:icon.shield-check class="size-5 text-green-600 dark:text-green-400 mr-2" />
-                    <flux:text class="font-medium text-zinc-900 dark:text-white">
-                        Permission Docs
-                    </flux:text>
-                </div>
-                <flux:text class="text-sm text-zinc-600 dark:text-zinc-400">
-                    Spatie Permission package
-                </flux:text>
-            </flux:link>
-        </div>
-    </div>
-
+    </section>
 </x-layouts.main>
