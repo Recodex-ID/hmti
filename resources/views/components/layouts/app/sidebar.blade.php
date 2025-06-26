@@ -24,6 +24,13 @@
                     <flux:navlist.item icon="information-circle" :href="route('about')" :current="request()->routeIs('about')" wire:navigate>Tentang Himpunan</flux:navlist.item>
                 </flux:navlist.group>
 
+                <flux:navlist.group :heading="__('Information')" class="grid">
+                    <flux:navlist.item icon="document-text" :href="route('circular-letters')" :current="request()->routeIs('circular-letters')" wire:navigate>Surat Edaran</flux:navlist.item>
+                    <flux:navlist.item icon="calendar" :href="route('activity-information')" :current="request()->routeIs('activity-information')" wire:navigate>Informasi Kegiatan</flux:navlist.item>
+                    <flux:navlist.item icon="trophy" :href="route('competition-information')" :current="request()->routeIs('competition-information')" wire:navigate>Informasi Lomba</flux:navlist.item>
+                    <flux:navlist.item icon="newspaper" :href="route('news')" :current="request()->routeIs('news')" wire:navigate>Berita</flux:navlist.item>
+                </flux:navlist.group>
+
                 @role('Super Admin')
                 <flux:navlist.group :heading="__('Administrator')" class="grid">
                     <flux:navlist.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>Manage Users</flux:navlist.item>

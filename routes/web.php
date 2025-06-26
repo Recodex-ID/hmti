@@ -27,6 +27,12 @@ Route::middleware(['auth'])->group(function () {
     // About Management Routes
     Route::get('/about', \App\Livewire\ManageAbout::class)->name('about');
 
+    // Information Management Routes
+    Route::get('/circular-letters', \App\Livewire\ManageCircularLetters::class)->name('circular-letters');
+    Route::get('/activity-information', \App\Livewire\ManageActivityInformation::class)->name('activity-information');
+    Route::get('/competition-information', \App\Livewire\ManageCompetitionInformation::class)->name('competition-information');
+    Route::get('/news', \App\Livewire\ManageNews::class)->name('news');
+
     // Administrator Routes
     Route::middleware(['role:Super Admin'])->prefix('administrator')->name('admin.')->group(function () {
         Route::get('/users', \App\Livewire\Administrator\ManageUsers::class)->name('users');

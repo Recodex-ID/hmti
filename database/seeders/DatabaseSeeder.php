@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
             AboutSeeder::class,
             CoreSeeder::class,
             HeroSeeder::class,
+            CircularLetterSeeder::class,
+            ActivityInformationSeeder::class,
+            CompetitionInformationSeeder::class,
+            NewsSeeder::class,
         ]);
     }
 }
