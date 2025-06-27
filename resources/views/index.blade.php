@@ -1,30 +1,30 @@
 <x-layouts.main title="Beranda | HMTI Telkom University">
     <!-- Hero Section with Carousel -->
     <div x-data="{
-    activeSlide: 0,
-    slides: [
-        {
-            image: '{{ asset('images/gedung.jpg') }}',
-            title: 'Himpunan Mahasiswa Teknik Industri',
-            subtitle: 'Membangun masa depan insinyur industri yang unggul'
-        },
-        {
-            image: 'https://picsum.photos/id/2/1920/1080',
-            title: 'Bergabunglah dengan Komunitas Kami',
-            subtitle: 'Terhubung dengan sesama mahasiswa dan profesional industri'
-        },
-        {
-            image: 'https://picsum.photos/id/3/1920/1080',
-            title: 'Keunggulan dalam Teknik Industri',
-            subtitle: 'Mengembangkan keterampilan, pengetahuan, dan inovasi'
-        }
-    ],
-    loop() {
-        setInterval(() => {
-            this.activeSlide = (this.activeSlide + 1) % this.slides.length
-        }, 5000)
-    }
-}"
+            activeSlide: 0,
+            slides: [
+                @if($heroes->count() > 0)
+                    @foreach($heroes as $hero)
+                    {
+                        image: '{{ $hero->image_url ? $hero->image_url : asset('images/gedung.jpg') }}',
+                        title: '{{ $hero->title }}',
+                        subtitle: '{{ $hero->subtitle }}'
+                    }@if(!$loop->last),@endif
+                    @endforeach
+                @else
+                    {
+                        image: '{{ asset('images/gedung.jpg') }}',
+                        title: 'Himpunan Mahasiswa Teknik Industri',
+                        subtitle: 'Membangun masa depan insinyur industri yang unggul'
+                    }
+                @endif
+            ],
+            loop() {
+                setInterval(() => {
+                    this.activeSlide = (this.activeSlide + 1) % this.slides.length
+                }, 5000)
+            }
+        }"
          x-init="loop()"
          class="relative overflow-hidden bg-zinc-900 h-[70vh]">
         <!-- Slides -->
@@ -108,17 +108,19 @@
     </div>
 
     <!-- Banner Section -->
+    @if($about && $about->hasBanner())
     <section class="py-8 md:py-12 lg:py-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-center">
                 <img
-                    src="{{ asset('images/banner.png') }}"
-                    alt="Banner"
+                    src="{{ $about->banner_url }}"
+                    alt="Banner HMTI"
                     class="w-full max-w-[1440px] h-auto aspect-[1440/440] object-cover rounded-lg border border-zinc-900"
                 >
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Informasi Surat Edaran Section -->
     <section class="py-8 md:py-12 lg:py-16 bg-zinc-50 dark:bg-zinc-800">
@@ -128,54 +130,29 @@
                 <p class="text-lg text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">Dapatkan informasi terbaru dari surat edaran HMTI untuk seluruh mahasiswa Teknik Industri</p>
             </div>
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Sample Circular Letter Cards -->
+                @forelse($circularLetters as $letter)
                 <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-zinc-200 dark:border-zinc-700">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">SE-001/2024</span>
-                        <span class="text-sm text-zinc-500 dark:text-zinc-400">15 Des 2024</span>
+                        <span class="bg-quarternary/10 text-quarternary px-3 py-1 rounded-full text-sm font-medium">{{ $letter->number }}</span>
+                        <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ $letter->letter_date->format('d M Y') }}</span>
                     </div>
-                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pengumuman Kegiatan Akhir Tahun HMTI</h3>
-                    <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Pemberitahuan mengenai serangkaian kegiatan akhir tahun yang akan dilaksanakan oleh HMTI...</p>
-                    <a href="#" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
+                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">{{ $letter->title }}</h3>
+                    <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">{{ Str::limit($letter->description, 100) }}</p>
+                    <a href="#" class="inline-flex items-center text-primary hover:text-secondary text-sm font-medium">
                         Baca Selengkapnya
                         <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
-
-                <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-zinc-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">SE-002/2024</span>
-                        <span class="text-sm text-zinc-500 dark:text-zinc-400">10 Des 2024</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Protokol Kesehatan dalam Kegiatan HMTI</h3>
-                    <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Panduan dan protokol kesehatan yang harus dipatuhi dalam setiap kegiatan HMTI...</p>
-                    <a href="#" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
-                        Baca Selengkapnya
-                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                @empty
+                <div class="col-span-full text-center py-8">
+                    <p class="text-zinc-500 dark:text-zinc-400">Belum ada surat edaran tersedia.</p>
                 </div>
-
-                <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-zinc-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">SE-003/2024</span>
-                        <span class="text-sm text-zinc-500 dark:text-zinc-400">5 Des 2024</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pendaftaran Anggota Baru HMTI 2025</h3>
-                    <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Informasi mengenai pembukaan pendaftaran anggota baru HMTI untuk tahun 2025...</p>
-                    <a href="#" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
-                        Baca Selengkapnya
-                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
+                @endforelse
             </div>
             <div class="text-center mt-8">
-                <a href="#" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition">
+                <a href="#" class="inline-flex items-center px-6 py-3 bg-primary hover:bg-secondary text-white font-medium rounded-lg transition">
                     Lihat Semua Surat Edaran
                     <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -193,66 +170,37 @@
                 <p class="text-lg text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">Ikuti berbagai kegiatan menarik yang diselenggarakan oleh HMTI Teknik Industri</p>
             </div>
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Sample Activity Cards -->
+                @forelse($activities as $activity)
                 <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                    <div class="h-48 bg-gradient-to-r from-green-400 to-green-600 relative">
+                    <div class="h-48 bg-gradient-to-r from-primary to-secondary relative">
+                        @if($activity->image_path)
+                            <img src="{{ asset('storage/' . $activity->image_path) }}" alt="{{ $activity->title }}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-80"></div>
+                        @endif
                         <div class="absolute top-4 left-4">
-                            <span class="bg-white/90 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Workshop</span>
+                            <span class="bg-white/90 text-primary px-3 py-1 rounded-full text-sm font-medium">{{ $activity->organizer ?? 'Kegiatan' }}</span>
                         </div>
                         <div class="absolute bottom-4 right-4">
-                            <span class="bg-white/90 text-zinc-800 px-3 py-1 rounded-full text-sm font-medium">20 Jan 2025</span>
+                            <span class="bg-white/90 text-zinc-800 px-3 py-1 rounded-full text-sm font-medium">{{ $activity->start_date->format('d M Y') }}</span>
                         </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Workshop Lean Manufacturing</h3>
-                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Pelatihan implementasi prinsip lean manufacturing dalam industri modern untuk meningkatkan efisiensi produksi</p>
+                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">{{ $activity->title }}</h3>
+                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">{{ Str::limit($activity->description, 100) }}</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-sm text-zinc-500 dark:text-zinc-400">📍 Gedung C - Lab IE</span>
-                            <a href="#" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 text-sm font-medium">Daftar</a>
+                            <span class="text-sm text-zinc-500 dark:text-zinc-400">📍 {{ $activity->location }}</span>
+                            <a href="#" class="text-primary hover:text-secondary text-sm font-medium">Daftar</a>
                         </div>
                     </div>
                 </div>
-
-                <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                    <div class="h-48 bg-gradient-to-r from-purple-400 to-purple-600 relative">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-white/90 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">Seminar</span>
-                        </div>
-                        <div class="absolute bottom-4 right-4">
-                            <span class="bg-white/90 text-zinc-800 px-3 py-1 rounded-full text-sm font-medium">25 Jan 2025</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Seminar Industri 4.0</h3>
-                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Diskusi mendalam tentang transformasi digital dan teknologi Industry 4.0 dalam perspektif teknik industri</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-zinc-500 dark:text-zinc-400">📍 Auditorium FRI</span>
-                            <a href="#" class="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-medium">Daftar</a>
-                        </div>
-                    </div>
+                @empty
+                <div class="col-span-full text-center py-8">
+                    <p class="text-zinc-500 dark:text-zinc-400">Belum ada kegiatan tersedia.</p>
                 </div>
-
-                <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                    <div class="h-48 bg-gradient-to-r from-orange-400 to-orange-600 relative">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-white/90 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">Kunjungan</span>
-                        </div>
-                        <div class="absolute bottom-4 right-4">
-                            <span class="bg-white/90 text-zinc-800 px-3 py-1 rounded-full text-sm font-medium">30 Jan 2025</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Kunjungan Industri</h3>
-                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Kunjungan ke PT. Astra Honda Motor untuk melihat langsung penerapan sistem produksi lean</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-zinc-500 dark:text-zinc-400">📍 PT. Astra Honda</span>
-                            <a href="#" class="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 text-sm font-medium">Daftar</a>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
             <div class="text-center mt-8">
-                <a href="#" class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition">
+                <a href="#" class="inline-flex items-center px-6 py-3 bg-secondary hover:bg-primary text-white font-medium rounded-lg transition">
                     Lihat Semua Kegiatan
                     <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -270,99 +218,46 @@
                 <p class="text-lg text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">Ikuti berbagai kompetisi dan lomba untuk mengasah kemampuan dan meraih prestasi</p>
             </div>
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Sample Competition Cards -->
+                @forelse($competitions as $competition)
                 <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-zinc-200 dark:border-zinc-700 relative">
                     <div class="absolute top-4 right-4">
-                        <span class="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-xs font-medium">Nasional</span>
+                        <span class="bg-primary/10 text-primary px-2 py-1 rounded text-xs font-medium">{{ $competition->level }}</span>
                     </div>
                     <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Industrial Engineering Competition 2025</h3>
-                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Kompetisi nasional untuk mahasiswa teknik industri dengan berbagai kategori lomba</p>
+                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">{{ $competition->title }}</h3>
+                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">{{ Str::limit($competition->description, 100) }}</p>
                     </div>
                     <div class="space-y-2 mb-4">
                         <div class="flex items-center text-sm text-zinc-500 dark:text-zinc-400">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            Deadline: 15 Februari 2025
+                            Deadline: {{ $competition->registration_deadline->format('d F Y') }}
                         </div>
+                        @if($competition->prizes)
                         <div class="flex items-center text-sm text-zinc-500 dark:text-zinc-400">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
                             </svg>
-                            Hadiah: Rp 25.000.000
+                            Hadiah: {{ $competition->prizes }}
                         </div>
+                        @endif
                     </div>
-                    <a href="#" class="inline-flex items-center text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm font-medium">
+                    <a href="#" class="inline-flex items-center text-primary hover:text-secondary text-sm font-medium">
                         Daftar Sekarang
                         <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
-
-                <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-zinc-200 dark:border-zinc-700 relative">
-                    <div class="absolute top-4 right-4">
-                        <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs font-medium">Regional</span>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Business Case Competition</h3>
-                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Kompetisi studi kasus bisnis untuk mahasiswa se-Jawa Barat dengan tema sustainable business</p>
-                    </div>
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-zinc-500 dark:text-zinc-400">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            Deadline: 20 Februari 2025
-                        </div>
-                        <div class="flex items-center text-sm text-zinc-500 dark:text-zinc-400">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                            </svg>
-                            Hadiah: Rp 15.000.000
-                        </div>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-300 text-sm font-medium">
-                        Daftar Sekarang
-                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                @empty
+                <div class="col-span-full text-center py-8">
+                    <p class="text-zinc-500 dark:text-zinc-400">Belum ada lomba tersedia.</p>
                 </div>
-
-                <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-zinc-200 dark:border-zinc-700 relative">
-                    <div class="absolute top-4 right-4">
-                        <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-xs font-medium">Internal</span>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">HMTI Innovation Challenge</h3>
-                        <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Kompetisi inovasi internal HMTI untuk mengembangkan solusi kreatif masalah industri</p>
-                    </div>
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-zinc-500 dark:text-zinc-400">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            Deadline: 28 Februari 2025
-                        </div>
-                        <div class="flex items-center text-sm text-zinc-500 dark:text-zinc-400">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                            </svg>
-                            Hadiah: Rp 5.000.000
-                        </div>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 text-sm font-medium">
-                        Daftar Sekarang
-                        <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
+                @endforelse
             </div>
             <div class="text-center mt-8">
-                <a href="#" class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition">
+                <a href="#" class="inline-flex items-center px-6 py-3 bg-primary hover:bg-secondary text-white font-medium rounded-lg transition">
                     Lihat Semua Lomba
                     <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -381,25 +276,30 @@
             </div>
             <div class="max-w-7xl mx-auto">
                 <!-- Featured News -->
+                @if($featuredNews)
                 <div class="mb-8">
                     <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
                         <div class="md:flex">
                             <div class="md:w-1/3">
-                                <div class="h-64 md:h-full bg-gradient-to-br from-blue-500 to-purple-600 relative">
-                                    <div class="absolute top-4 left-4">
-                                        <span class="bg-white/90 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">Featured</span>
+                                @if($featuredNews->featured_image)
+                                    <img src="{{ asset('storage/' . $featuredNews->featured_image) }}" alt="{{ $featuredNews->title }}" class="w-full h-64 md:h-full object-cover">
+                                @else
+                                    <div class="h-64 md:h-full bg-gradient-to-br from-primary to-secondary relative">
+                                        <div class="absolute top-4 left-4">
+                                            <span class="bg-white/90 text-primary px-3 py-1 rounded-full text-sm font-medium">Featured</span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                             <div class="md:w-2/3 p-6">
                                 <div class="flex items-center mb-2">
-                                    <span class="text-sm text-zinc-500 dark:text-zinc-400">22 Desember 2024</span>
+                                    <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ $featuredNews->published_at->format('d F Y') }}</span>
                                     <span class="mx-2 text-zinc-300">•</span>
-                                    <span class="text-sm text-purple-600 dark:text-purple-400 font-medium">Prestasi</span>
+                                    <span class="text-sm text-quarternary font-medium">{{ $featuredNews->category }}</span>
                                 </div>
-                                <h3 class="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">HMTI Telkom University Raih Juara 1 Kompetisi Nasional Industrial Engineering</h3>
-                                <p class="text-zinc-600 dark:text-zinc-300 mb-4">Tim mahasiswa HMTI Telkom University berhasil meraih juara 1 dalam kompetisi nasional Industrial Engineering Challenge 2024 yang diselenggarakan di Jakarta. Prestasi ini membuktikan kualitas mahasiswa teknik industri Telkom University di tingkat nasional.</p>
-                                <a href="#" class="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium">
+                                <h3 class="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">{{ $featuredNews->title }}</h3>
+                                <p class="text-zinc-600 dark:text-zinc-300 mb-4">{{ $featuredNews->excerpt }}</p>
+                                <a href="#" class="inline-flex items-center text-primary hover:text-secondary font-medium">
                                     Baca Selengkapnya
                                     <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -409,60 +309,40 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- News Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @forelse($news as $article)
                     <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                        <div class="h-48 bg-gradient-to-r from-green-400 to-blue-500 relative">
+                        <div class="h-48 relative">
+                            @if($article->featured_image)
+                                <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-r from-primary to-secondary"></div>
+                            @endif
                             <div class="absolute bottom-4 left-4">
-                                <span class="bg-white/90 text-zinc-800 px-2 py-1 rounded text-xs">20 Des 2024</span>
+                                <span class="bg-white/90 text-zinc-800 px-2 py-1 rounded text-xs">{{ $article->published_at->format('d M Y') }}</span>
                             </div>
                         </div>
                         <div class="p-6">
                             <div class="mb-2">
-                                <span class="text-xs text-green-600 dark:text-green-400 font-medium">Kegiatan</span>
+                                <span class="text-xs text-quarternary font-medium">{{ $article->category }}</span>
                             </div>
-                            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Workshop Lean Six Sigma Sukses Diselenggarakan</h3>
-                            <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">HMTI berhasil menyelenggarakan workshop Lean Six Sigma dengan partisipasi 150 mahasiswa dari berbagai perguruan tinggi.</p>
-                            <a href="#" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 text-sm font-medium">Baca Selengkapnya</a>
+                            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">{{ $article->title }}</h3>
+                            <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">{{ Str::limit($article->excerpt, 100) }}</p>
+                            <a href="#" class="text-primary hover:text-secondary text-sm font-medium">Baca Selengkapnya</a>
                         </div>
                     </div>
-
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                        <div class="h-48 bg-gradient-to-r from-orange-400 to-red-500 relative">
-                            <div class="absolute bottom-4 left-4">
-                                <span class="bg-white/90 text-zinc-800 px-2 py-1 rounded text-xs">18 Des 2024</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <div class="mb-2">
-                                <span class="text-xs text-orange-600 dark:text-orange-400 font-medium">Kerjasama</span>
-                            </div>
-                            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">MoU dengan PT Unilever Indonesia</h3>
-                            <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">HMTI menandatangani MoU dengan PT Unilever Indonesia untuk program magang dan pengembangan kurikulum.</p>
-                            <a href="#" class="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 text-sm font-medium">Baca Selengkapnya</a>
-                        </div>
+                    @empty
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-zinc-500 dark:text-zinc-400">Belum ada berita tersedia.</p>
                     </div>
-
-                    <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                        <div class="h-48 bg-gradient-to-r from-purple-400 to-pink-500 relative">
-                            <div class="absolute bottom-4 left-4">
-                                <span class="bg-white/90 text-zinc-800 px-2 py-1 rounded text-xs">15 Des 2024</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <div class="mb-2">
-                                <span class="text-xs text-purple-600 dark:text-purple-400 font-medium">Pengumuman</span>
-                            </div>
-                            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pengurus Baru HMTI Periode 2025</h3>
-                            <p class="text-zinc-600 dark:text-zinc-300 text-sm mb-4">Pengumuman susunan pengurus baru HMTI Telkom University periode 2025 telah resmi diumumkan.</p>
-                            <a href="#" class="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-medium">Baca Selengkapnya</a>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
             <div class="text-center mt-8">
-                <a href="#" class="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition">
+                <a href="#" class="inline-flex items-center px-6 py-3 bg-quarternary hover:bg-quarternary/80 text-black font-medium rounded-lg transition">
                     Lihat Semua Berita
                     <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -473,6 +353,7 @@
     </section>
 
     <!-- Video Profil Section -->
+    @if($about && $about->hasYoutubeLink())
     <section class="py-8 md:py-12 lg:py-16 bg-zinc-900">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="mb-12 text-center">
@@ -485,8 +366,8 @@
                     <!-- YouTube embed with responsive iframe -->
                     <iframe
                         class="absolute inset-0 w-full h-full"
-                        src="https://www.youtube.com/embed/MkOS0xYa5qY?si=_ZNVQDB72NI-rK0I"
-                        title="THIRTY TWO WONDER YEARS"
+                        src="{{ $about->youtube_embed_url }}"
+                        title="Video Profil HMTI"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
@@ -505,4 +386,5 @@
             </div>
         </div>
     </section>
+    @endif
 </x-layouts.main>
