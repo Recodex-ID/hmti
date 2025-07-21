@@ -24,12 +24,12 @@
                     </svg>
                 </button>
                 <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Tentang Kami</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">AD/ART</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Panduan Logo HMTI</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Grand Design HMTI 2025</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">HUT HMTI</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Sejarah HMTI</a>
+                    <a href="{{ route('profil.tentang-kami') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Tentang Kami</a>
+                    <a href="{{ route('profil.ad-art') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">AD/ART</a>
+                    <a href="{{ route('profil.panduan-logo') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Panduan Logo HMTI</a>
+                    <a href="{{ route('profil.grand-design') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Grand Design HMTI 2025</a>
+                    <a href="{{ route('profil.hut-hmti') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">HUT HMTI</a>
+                    <a href="{{ route('profil.sejarah') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Sejarah HMTI</a>
                 </div>
             </div>
 
@@ -41,20 +41,38 @@
                     </svg>
                 </button>
                 <div class="absolute left-0 mt-2 w-64 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase">Internal</div>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Human Resource</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Kaderisasi</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Kemahasiswaan</a>
+                    @php
+                        $internalDepartments = \App\Models\Department::internal()->get();
+                        $pstiDepartments = \App\Models\Department::psti()->get();
+                        $eksternalDepartments = \App\Models\Department::eksternal()->get();
+                    @endphp
                     
-                    <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase border-t border-zinc-200 dark:border-zinc-700 mt-2">PSTI</div>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Akademik</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Generasi Bisnis</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Riset & Kompetisi</a>
+                    @if($internalDepartments->count() > 0)
+                        <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase">Internal</div>
+                        @foreach($internalDepartments as $department)
+                            <a href="{{ route('departemen.show', $department->id) }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">
+                                {{ $department->title }}
+                            </a>
+                        @endforeach
+                    @endif
                     
-                    <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase border-t border-zinc-200 dark:border-zinc-700 mt-2">Eksternal</div>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Departemen Komunikasi & Informasi</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Biro Dedikasi Masyarakat</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Biro Public Relation</a>
+                    @if($pstiDepartments->count() > 0)
+                        <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase border-t border-zinc-200 dark:border-zinc-700 mt-2">PSTI</div>
+                        @foreach($pstiDepartments as $department)
+                            <a href="{{ route('departemen.show', $department->id) }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">
+                                {{ $department->title }}
+                            </a>
+                        @endforeach
+                    @endif
+                    
+                    @if($eksternalDepartments->count() > 0)
+                        <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase border-t border-zinc-200 dark:border-zinc-700 mt-2">Eksternal</div>
+                        @foreach($eksternalDepartments as $department)
+                            <a href="{{ route('departemen.show', $department->id) }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">
+                                {{ $department->title }}
+                            </a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
 
@@ -66,23 +84,28 @@
                     </svg>
                 </button>
                 <div class="absolute left-0 mt-2 w-64 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase">Community</div>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Incoustic</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Industrial Competition Community</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Koma Creative</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Maroon Army</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Community Motor Telkom University</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Community of Tentor</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Society</a>
+                    @php
+                        $communitiesType = \App\Models\Community::communityType()->get();
+                        $committeesType = \App\Models\Community::committee()->get();
+                    @endphp
                     
-                    <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase border-t border-zinc-200 dark:border-zinc-700 mt-2">Committee</div>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Invention</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">SEHATI</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">LEGION</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Increase</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Inaugurasi</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">ORATIONS</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">INFADE</a>
+                    @if($communitiesType->count() > 0)
+                        <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase">Community</div>
+                        @foreach($communitiesType as $community)
+                            <a href="{{ route('community.show', $community->id) }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">
+                                {{ $community->title }}
+                            </a>
+                        @endforeach
+                    @endif
+                    
+                    @if($committeesType->count() > 0)
+                        <div class="px-4 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase border-t border-zinc-200 dark:border-zinc-700 mt-2">Committee</div>
+                        @foreach($committeesType as $community)
+                            <a href="{{ route('community.show', $community->id) }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">
+                                {{ $community->title }}
+                            </a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
 
@@ -94,9 +117,9 @@
                     </svg>
                 </button>
                 <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Benchmark</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Media Partner</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">MC & Moderator</a>
+                    <a href="{{ route('partnership.benchmark') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Benchmark</a>
+                    <a href="{{ route('partnership.media-partner') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Media Partner</a>
+                    <a href="{{ route('partnership.mc-moderator') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">MC & Moderator</a>
                 </div>
             </div>
 
@@ -108,10 +131,10 @@
                     </svg>
                 </button>
                 <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Komisi A</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Komisi B</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Komisi C</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">BURT</a>
+                    <a href="{{ route('mpm.komisi-a') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Komisi A</a>
+                    <a href="{{ route('mpm.komisi-b') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Komisi B</a>
+                    <a href="{{ route('mpm.komisi-c') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">Komisi C</a>
+                    <a href="{{ route('mpm.burt') }}" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700">BURT</a>
                 </div>
             </div>
         </div>
