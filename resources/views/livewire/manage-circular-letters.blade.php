@@ -14,10 +14,6 @@
         <flux:callout variant="success" icon="check-circle" heading="{{ session('message') }}" class="mb-6" />
     @endif
 
-    <div class="mb-6">
-        <flux:input wire:model.live.debounce.300ms="search" placeholder="Cari surat edaran..." icon="magnifying-glass" />
-    </div>
-
     <div class="border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
@@ -42,7 +38,7 @@
                             <div class="text-xs text-zinc-500 dark:text-zinc-400 truncate">{{ $circularLetter->description }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
-                            {{ $circularLetter->letter_date->format('d M Y') }}
+                            {{ $circularLetter->letter_date->translatedFormat('d F Y') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($circularLetter->is_active)
@@ -57,7 +53,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex space-x-2">
                                 @if($circularLetter->file_path)
-                                    <flux:button size="sm" variant="ghost" color="green" icon="document-arrow-down" 
+                                    <flux:button size="sm" variant="ghost" color="green" icon="document-arrow-down"
                                                 onclick="window.open('{{ Storage::url($circularLetter->file_path) }}', '_blank')" />
                                 @endif
                                 <flux:button wire:click="edit({{ $circularLetter->id }})" size="sm" variant="primary" color="blue" icon="pencil" />

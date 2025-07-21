@@ -12,45 +12,34 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                @role('Super Admin')
+                <flux:navlist.group heading="Administrator" class="grid">
+                    <flux:navlist.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>Manage Users</flux:navlist.item>
+                    <flux:navlist.item icon="shield-check" :href="route('admin.roles')" :current="request()->routeIs('admin.roles')" wire:navigate>Manage Roles</flux:navlist.item>
+                </flux:navlist.group>
+                @endrole
+
+                <flux:navlist.group heading="Platform" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
 
-                <flux:navlist.group :heading="__('Management')" class="grid">
+                <flux:navlist.group heading="Management" class="grid">
+                    <flux:navlist.item icon="information-circle" :href="route('about')" :current="request()->routeIs('about')" wire:navigate>Tentang Himpunan</flux:navlist.item>
+                    <flux:navlist.item icon="photo" :href="route('heroes')" :current="request()->routeIs('heroes')" wire:navigate>Hero Section</flux:navlist.item>
+                    <flux:navlist.item icon="user-circle" :href="route('cores')" :current="request()->routeIs('cores')" wire:navigate>Pengurus Inti</flux:navlist.item>
                     <flux:navlist.item icon="building-office" :href="route('departments')" :current="request()->routeIs('departments')" wire:navigate>Departemen & Biro</flux:navlist.item>
                     <flux:navlist.item icon="user-group" :href="route('communities')" :current="request()->routeIs('communities')" wire:navigate>Community & Committee</flux:navlist.item>
-                    <flux:navlist.item icon="user-circle" :href="route('cores')" :current="request()->routeIs('cores')" wire:navigate>Pengurus Inti</flux:navlist.item>
-                    <flux:navlist.item icon="photo" :href="route('heroes')" :current="request()->routeIs('heroes')" wire:navigate>Hero Section</flux:navlist.item>
-                    <flux:navlist.item icon="information-circle" :href="route('about')" :current="request()->routeIs('about')" wire:navigate>Tentang Himpunan</flux:navlist.item>
                 </flux:navlist.group>
 
-                <flux:navlist.group :heading="__('Information')" class="grid">
+                <flux:navlist.group heading="Information" class="grid">
                     <flux:navlist.item icon="document-text" :href="route('circular-letters')" :current="request()->routeIs('circular-letters')" wire:navigate>Surat Edaran</flux:navlist.item>
                     <flux:navlist.item icon="calendar" :href="route('activity-information')" :current="request()->routeIs('activity-information')" wire:navigate>Informasi Kegiatan</flux:navlist.item>
                     <flux:navlist.item icon="trophy" :href="route('competition-information')" :current="request()->routeIs('competition-information')" wire:navigate>Informasi Lomba</flux:navlist.item>
                     <flux:navlist.item icon="newspaper" :href="route('news')" :current="request()->routeIs('news')" wire:navigate>Berita</flux:navlist.item>
                 </flux:navlist.group>
-
-                @role('Super Admin')
-                <flux:navlist.group :heading="__('Administrator')" class="grid">
-                    <flux:navlist.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>Manage Users</flux:navlist.item>
-                    <flux:navlist.item icon="shield-check" :href="route('admin.roles')" :current="request()->routeIs('admin.roles')" wire:navigate>Manage Roles</flux:navlist.item>
-                    <flux:navlist.item icon="key" :href="route('admin.permissions')" :current="request()->routeIs('admin.permissions')" wire:navigate>Manage Permissions</flux:navlist.item>
-                </flux:navlist.group>
-                @endrole
             </flux:navlist>
 
             <flux:spacer />
-
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/zachran-recodex/laravel-livewire-crud.git" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://github.com/zachran-recodex/laravel-livewire-crud.git" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist>
 
             <!-- Desktop User Menu -->
             <flux:dropdown class="hidden lg:block" position="bottom" align="start">
@@ -83,7 +72,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>Settings</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -91,7 +80,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            Log Out
                         </flux:menu.item>
                     </form>
                 </flux:menu>
@@ -133,7 +122,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>Settings</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -141,7 +130,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            Log Out
                         </flux:menu.item>
                     </form>
                 </flux:menu>

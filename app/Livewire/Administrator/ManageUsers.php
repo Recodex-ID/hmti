@@ -20,7 +20,6 @@ class ManageUsers extends Component
     public $selectedRoles = [];
     public $editingUserId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -48,11 +47,6 @@ class ManageUsers extends Component
     public function users()
     {
         return User::with('roles')
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('username', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%');
-            })
             ->latest()
             ->paginate(10);
     }

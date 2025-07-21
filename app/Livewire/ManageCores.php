@@ -18,7 +18,6 @@ class ManageCores extends Component
     public $photo;
     public $editingCoreId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -34,11 +33,7 @@ class ManageCores extends Component
     #[Computed]
     public function cores()
     {
-        return Core::when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('position', 'like', '%' . $this->search . '%');
-            })
-            ->orderedByPosition()
+        return Core::orderedByPosition()
             ->paginate(10);
     }
 

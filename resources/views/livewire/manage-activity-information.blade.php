@@ -14,10 +14,6 @@
         <flux:callout variant="success" icon="check-circle" heading="{{ session('message') }}" class="mb-6" />
     @endif
 
-    <div class="mb-6">
-        <flux:input wire:model.live.debounce.300ms="search" placeholder="Cari informasi kegiatan..." icon="magnifying-glass" />
-    </div>
-
     <div class="border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
@@ -25,7 +21,7 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Gambar</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Judul</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Tanggal</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Tanggal & Waktu</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Lokasi</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Aksi</th>
@@ -48,7 +44,7 @@
                             <div class="text-xs text-zinc-500 dark:text-zinc-400 truncate">{{ $activity->organizer }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
-                            <div>{{ $activity->start_date->format('d M Y') }}</div>
+                            <div>{{ $activity->start_date->translatedFormat('d F Y') }}</div>
                             <div class="text-xs">{{ $activity->start_date->format('H:i') }} - {{ $activity->end_date->format('H:i') }}</div>
                         </td>
                         <td class="px-6 py-4 text-sm text-zinc-500 dark:text-zinc-400 max-w-xs truncate">

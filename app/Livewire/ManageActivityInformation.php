@@ -30,7 +30,6 @@ class ManageActivityInformation extends Component
     public $is_active = true;
     public $editingActivityInformationId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -56,13 +55,7 @@ class ManageActivityInformation extends Component
     #[Computed]
     public function activityInformation()
     {
-        return ActivityInformation::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%')
-                      ->orWhere('location', 'like', '%' . $this->search . '%')
-                      ->orWhere('organizer', 'like', '%' . $this->search . '%');
-            })
-            ->with('creator')
+        return ActivityInformation::with('creator')
             ->latest()
             ->paginate(10);
     }
@@ -92,7 +85,7 @@ class ManageActivityInformation extends Component
         $this->contact_email = $activityInformation->contact_email;
         $this->is_active = $activityInformation->is_active;
         $this->image_path = null;
-        
+
         $this->showModal = true;
     }
 

@@ -34,7 +34,6 @@ class ManageCompetitionInformation extends Component
     public $is_active = true;
     public $editingCompetitionInformationId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -64,13 +63,7 @@ class ManageCompetitionInformation extends Component
     #[Computed]
     public function competitionInformation()
     {
-        return CompetitionInformation::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%')
-                      ->orWhere('category', 'like', '%' . $this->search . '%')
-                      ->orWhere('organizer', 'like', '%' . $this->search . '%');
-            })
-            ->with('creator')
+        return CompetitionInformation::with('creator')
             ->latest()
             ->paginate(10);
     }
@@ -110,7 +103,7 @@ class ManageCompetitionInformation extends Component
         $this->website_url = $competitionInformation->website_url;
         $this->is_active = $competitionInformation->is_active;
         $this->image_path = null;
-        
+
         $this->showModal = true;
     }
 

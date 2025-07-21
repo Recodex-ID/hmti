@@ -24,28 +24,27 @@ class ManageDepartments extends Component
     public $logo;
     public $editingDepartmentId = null;
     public $showModal = false;
-    public $search = '';
-    
+
     // Tab management
     public $activeTab = 'department';
-    
+
     // Function properties
     public $functionTitle = '';
     public $editingFunctionId = null;
     public $functions = [];
-    
+
     // Work Program properties
     public $programTitle = '';
     public $programDescription = '';
     public $editingProgramId = null;
     public $workPrograms = [];
-    
+
     // Agenda properties
     public $agendaTitle = '';
     public $agendaDescription = '';
     public $editingAgendaId = null;
     public $agendas = [];
-    
+
     // Member properties
     public $memberName = '';
     public $memberPosition = '';
@@ -62,18 +61,18 @@ class ManageDepartments extends Component
             'description' => 'nullable|string',
             'division' => 'required|string|in:Internal,PSTI,Eksternal',
             'logo' => 'nullable|image|max:2048',
-            
+
             // Function rules
             'functionTitle' => 'required|string|max:255',
-            
+
             // Work Program rules
             'programTitle' => 'required|string|max:255',
             'programDescription' => 'nullable|string',
-            
+
             // Agenda rules
             'agendaTitle' => 'required|string|max:255',
             'agendaDescription' => 'nullable|string',
-            
+
             // Member rules
             'memberName' => 'required|string|max:255',
             'memberPosition' => 'required|string|in:head,staff',
@@ -94,12 +93,7 @@ class ManageDepartments extends Component
     #[Computed]
     public function departments()
     {
-        return Department::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%')
-                      ->orWhere('division', 'like', '%' . $this->search . '%');
-            })
-            ->withCount(['departmentFunctions', 'workPrograms', 'agendas', 'members', 'activeMembers'])
+        return Department::withCount(['departmentFunctions', 'workPrograms', 'agendas', 'members', 'activeMembers'])
             ->latest()
             ->paginate(10);
     }
@@ -125,10 +119,10 @@ class ManageDepartments extends Component
         $this->description = $department->description;
         $this->division = $department->division;
         $this->logo = null;
-        
+
         // Load related data
         $this->loadRelatedData($departmentId);
-        
+
         $this->activeTab = 'department';
         $this->showModal = true;
     }
@@ -200,12 +194,12 @@ class ManageDepartments extends Component
         $this->resetRelatedData();
         $this->resetValidation();
     }
-    
+
     public function resetDepartmentForm()
     {
         $this->reset(['title', 'description', 'division', 'logo', 'editingDepartmentId']);
     }
-    
+
     public function resetRelatedData()
     {
         $this->reset([
@@ -215,7 +209,7 @@ class ManageDepartments extends Component
             'members', 'memberName', 'memberPosition', 'memberPhoto', 'memberStartYear', 'memberEndYear', 'editingMemberId'
         ]);
     }
-    
+
     public function loadRelatedData($departmentId)
     {
         $this->functions = DepartmentFunction::where('department_id', $departmentId)->get()->toArray();
@@ -223,34 +217,34 @@ class ManageDepartments extends Component
         $this->agendas = Agenda::where('department_id', $departmentId)->get()->toArray();
         $this->members = Member::where('department_id', $departmentId)->get()->toArray();
     }
-    
+
     // Function management methods
     public function addFunction()
     {
         $this->validateOnly('functionTitle');
-        
+
         if (!$this->editingDepartmentId) {
             $this->addError('functionTitle', 'Simpan departemen terlebih dahulu sebelum menambah fungsi.');
             return;
         }
-        
+
         $this->functions[] = [
             'id' => $this->editingFunctionId ?: 'new_' . count($this->functions),
             'title' => $this->functionTitle,
             'department_id' => $this->editingDepartmentId,
             'is_new' => !$this->editingFunctionId
         ];
-        
+
         $this->reset(['functionTitle', 'editingFunctionId']);
     }
-    
+
     public function editFunction($index)
     {
         $function = $this->functions[$index];
         $this->functionTitle = $function['title'];
         $this->editingFunctionId = $function['id'];
     }
-    
+
     public function removeFunction($index)
     {
         if (isset($this->functions[$index]['id']) && !str_starts_with($this->functions[$index]['id'], 'new_')) {
@@ -260,17 +254,17 @@ class ManageDepartments extends Component
             $this->functions = array_values($this->functions);
         }
     }
-    
+
     // Work Program management methods
     public function addWorkProgram()
     {
         $this->validateOnly('programTitle');
-        
+
         if (!$this->editingDepartmentId) {
             $this->addError('programTitle', 'Simpan departemen terlebih dahulu sebelum menambah program kerja.');
             return;
         }
-        
+
         $this->workPrograms[] = [
             'id' => $this->editingProgramId ?: 'new_' . count($this->workPrograms),
             'title' => $this->programTitle,
@@ -278,10 +272,10 @@ class ManageDepartments extends Component
             'department_id' => $this->editingDepartmentId,
             'is_new' => !$this->editingProgramId
         ];
-        
+
         $this->reset(['programTitle', 'programDescription', 'editingProgramId']);
     }
-    
+
     public function editWorkProgram($index)
     {
         $program = $this->workPrograms[$index];
@@ -289,7 +283,7 @@ class ManageDepartments extends Component
         $this->programDescription = $program['description'] ?? '';
         $this->editingProgramId = $program['id'];
     }
-    
+
     public function removeWorkProgram($index)
     {
         if (isset($this->workPrograms[$index]['id']) && !str_starts_with($this->workPrograms[$index]['id'], 'new_')) {
@@ -299,17 +293,17 @@ class ManageDepartments extends Component
             $this->workPrograms = array_values($this->workPrograms);
         }
     }
-    
+
     // Agenda management methods
     public function addAgenda()
     {
         $this->validateOnly('agendaTitle');
-        
+
         if (!$this->editingDepartmentId) {
             $this->addError('agendaTitle', 'Simpan departemen terlebih dahulu sebelum menambah agenda.');
             return;
         }
-        
+
         $this->agendas[] = [
             'id' => $this->editingAgendaId ?: 'new_' . count($this->agendas),
             'title' => $this->agendaTitle,
@@ -317,10 +311,10 @@ class ManageDepartments extends Component
             'department_id' => $this->editingDepartmentId,
             'is_new' => !$this->editingAgendaId
         ];
-        
+
         $this->reset(['agendaTitle', 'agendaDescription', 'editingAgendaId']);
     }
-    
+
     public function editAgenda($index)
     {
         $agenda = $this->agendas[$index];
@@ -328,7 +322,7 @@ class ManageDepartments extends Component
         $this->agendaDescription = $agenda['description'] ?? '';
         $this->editingAgendaId = $agenda['id'];
     }
-    
+
     public function removeAgenda($index)
     {
         if (isset($this->agendas[$index]['id']) && !str_starts_with($this->agendas[$index]['id'], 'new_')) {
@@ -338,7 +332,7 @@ class ManageDepartments extends Component
             $this->agendas = array_values($this->agendas);
         }
     }
-    
+
     // Member management methods
     public function addMember()
     {
@@ -349,12 +343,12 @@ class ManageDepartments extends Component
             'memberStartYear' => 'required|integer|min:2000|max:' . ((int)date('Y') + 10),
             'memberEndYear' => 'nullable|integer|min:2000|max:' . ((int)date('Y') + 10) . '|gte:memberStartYear',
         ]);
-        
+
         if (!$this->editingDepartmentId) {
             $this->addError('memberName', 'Simpan departemen terlebih dahulu sebelum menambah anggota.');
             return;
         }
-        
+
         $memberData = [
             'id' => $this->editingMemberId ?: 'new_' . count($this->members),
             'name' => $this->memberName,
@@ -364,17 +358,17 @@ class ManageDepartments extends Component
             'department_id' => $this->editingDepartmentId,
             'is_new' => !$this->editingMemberId
         ];
-        
+
         if ($this->memberPhoto) {
             $memberData['photo'] = $this->memberPhoto->store('members', 'public');
             $memberData['photo_temp'] = true;
         }
-        
+
         $this->members[] = $memberData;
-        
+
         $this->reset(['memberName', 'memberPosition', 'memberPhoto', 'memberStartYear', 'memberEndYear', 'editingMemberId']);
     }
-    
+
     public function editMember($index)
     {
         $member = $this->members[$index];
@@ -385,7 +379,7 @@ class ManageDepartments extends Component
         $this->memberPhoto = null;
         $this->editingMemberId = $member['id'];
     }
-    
+
     public function removeMember($index)
     {
         if (isset($this->members[$index]['id']) && !str_starts_with($this->members[$index]['id'], 'new_')) {
@@ -395,7 +389,7 @@ class ManageDepartments extends Component
             $this->members = array_values($this->members);
         }
     }
-    
+
     private function saveRelatedData($departmentId)
     {
         // Save Functions
@@ -415,7 +409,7 @@ class ManageDepartments extends Component
                 ]);
             }
         }
-        
+
         // Save Work Programs
         foreach ($this->workPrograms as $program) {
             if (isset($program['_delete']) && $program['_delete']) {
@@ -435,7 +429,7 @@ class ManageDepartments extends Component
                 ]);
             }
         }
-        
+
         // Save Agendas
         foreach ($this->agendas as $agenda) {
             if (isset($agenda['_delete']) && $agenda['_delete']) {
@@ -455,7 +449,7 @@ class ManageDepartments extends Component
                 ]);
             }
         }
-        
+
         // Save Members
         foreach ($this->members as $member) {
             if (isset($member['_delete']) && $member['_delete']) {
@@ -474,11 +468,11 @@ class ManageDepartments extends Component
                     'start_year' => $member['start_year'],
                     'end_year' => $member['end_year']
                 ];
-                
+
                 if (isset($member['photo'])) {
                     $memberData['photo'] = $member['photo'];
                 }
-                
+
                 Member::create($memberData);
             } elseif (!str_starts_with($member['id'], 'new_')) {
                 $memberData = [
@@ -487,7 +481,7 @@ class ManageDepartments extends Component
                     'start_year' => $member['start_year'],
                     'end_year' => $member['end_year']
                 ];
-                
+
                 if (isset($member['photo'])) {
                     $existingMember = Member::find($member['id']);
                     if ($existingMember && $existingMember->photo && $existingMember->photo !== $member['photo']) {
@@ -495,7 +489,7 @@ class ManageDepartments extends Component
                     }
                     $memberData['photo'] = $member['photo'];
                 }
-                
+
                 Member::find($member['id'])?->update($memberData);
             }
         }

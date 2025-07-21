@@ -14,10 +14,6 @@
         <flux:callout variant="success" icon="check-circle" heading="{{ session('message') }}" class="mb-6" />
     @endif
 
-    <div class="mb-6">
-        <flux:input wire:model.live.debounce.300ms="search" placeholder="Cari informasi lomba..." icon="magnifying-glass" />
-    </div>
-
     <div class="border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
@@ -61,8 +57,8 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
-                            <div>{{ $competition->start_date->format('d M Y') }}</div>
-                            <div class="text-xs">Deadline: {{ $competition->registration_deadline->format('d M Y') }}</div>
+                            <div>{{ $competition->start_date->translatedFormat('d F Y') }}</div>
+                            <div class="text-xs">Deadline: {{ $competition->registration_deadline->translatedFormat('d F Y') }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($competition->is_active)

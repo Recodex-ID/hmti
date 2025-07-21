@@ -19,7 +19,6 @@ class ManageCommunities extends Component
     public $logo;
     public $editingCommunityId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -42,12 +41,7 @@ class ManageCommunities extends Component
     #[Computed]
     public function communities()
     {
-        return Community::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%')
-                      ->orWhere('category', 'like', '%' . $this->search . '%');
-            })
-            ->latest()
+        return Community::latest()
             ->paginate(10);
     }
 

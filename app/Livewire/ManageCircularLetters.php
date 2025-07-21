@@ -22,7 +22,6 @@ class ManageCircularLetters extends Component
     public $is_active = true;
     public $editingCircularLetterId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -48,12 +47,7 @@ class ManageCircularLetters extends Component
     #[Computed]
     public function circularLetters()
     {
-        return CircularLetter::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%')
-                      ->orWhere('number', 'like', '%' . $this->search . '%');
-            })
-            ->with('creator')
+        return CircularLetter::with('creator')
             ->latest()
             ->paginate(10);
     }
@@ -75,7 +69,7 @@ class ManageCircularLetters extends Component
         $this->letter_date = $circularLetter->letter_date->format('Y-m-d');
         $this->is_active = $circularLetter->is_active;
         $this->file_path = null;
-        
+
         $this->showModal = true;
     }
 

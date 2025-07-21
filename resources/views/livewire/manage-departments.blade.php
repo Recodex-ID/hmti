@@ -14,10 +14,6 @@
         <flux:callout variant="success" icon="check-circle" heading="{{ session('message') }}" class="mb-6" />
     @endif
 
-    <div class="mb-6">
-        <flux:input wire:model.live.debounce.300ms="search" placeholder="Cari department..." icon="magnifying-glass" />
-    </div>
-
     <div class="border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
@@ -118,27 +114,27 @@
                 <nav class="-mb-px flex space-x-8">
                     <button type="button"
                         wire:click="$set('activeTab', 'department')"
-                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'department' ? 'border-blue-500 text-blue-600' : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300' }}">
+                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'department' ? 'border-white text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-300' }}">
                         Info Departemen
                     </button>
                     <button type="button"
                         wire:click="$set('activeTab', 'functions')"
-                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'functions' ? 'border-blue-500 text-blue-600' : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300' }}">
+                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'functions' ? 'border-white text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-300' }}">
                         Fungsi
                     </button>
                     <button type="button"
                         wire:click="$set('activeTab', 'programs')"
-                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'programs' ? 'border-blue-500 text-blue-600' : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300' }}">
+                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'programs' ? 'border-white text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-300' }}">
                         Program Kerja
                     </button>
                     <button type="button"
                         wire:click="$set('activeTab', 'agendas')"
-                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'agendas' ? 'border-blue-500 text-blue-600' : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300' }}">
+                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'agendas' ? 'border-white text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-300' }}">
                         Agenda
                     </button>
                     <button type="button"
                         wire:click="$set('activeTab', 'members')"
-                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'members' ? 'border-blue-500 text-blue-600' : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300' }}">
+                        class="py-2 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'members' ? 'border-white text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-300' }}">
                         Anggota
                     </button>
                 </nav>
@@ -330,7 +326,7 @@
                                         <flux:select.option value="staff">Anggota</flux:select.option>
                                     </flux:select>
                                 </div>
-                                
+
                                 <flux:field>
                                     <flux:label>Foto Anggota</flux:label>
                                     <flux:input type="file" wire:model="memberPhoto" accept="image/*" />
@@ -354,7 +350,7 @@
                                         @endif
                                     @endif
                                 </flux:field>
-                                
+
                                 <div class="grid grid-cols-2 gap-3">
                                     <flux:input type="number" wire:model="memberStartYear" placeholder="Tahun mulai..." min="2000" max="{{ (int)date('Y') + 10 }}" />
                                     <flux:input type="number" wire:model="memberEndYear" placeholder="Tahun selesai (opsional)..." min="2000" max="{{ (int)date('Y') + 10 }}" />
@@ -372,8 +368,8 @@
                                             <div class="flex items-center justify-between p-3 border rounded-lg">
                                                 <div class="flex items-center space-x-3">
                                                     @if(!empty($member['photo']))
-                                                        <img src="{{ isset($member['photo_temp']) ? Storage::url($member['photo']) : (str_starts_with($member['photo'], 'http') ? $member['photo'] : Storage::url($member['photo'])) }}" 
-                                                             alt="{{ $member['name'] }}" 
+                                                        <img src="{{ isset($member['photo_temp']) ? Storage::url($member['photo']) : (str_starts_with($member['photo'], 'http') ? $member['photo'] : Storage::url($member['photo'])) }}"
+                                                             alt="{{ $member['name'] }}"
                                                              class="w-10 h-10 rounded-full object-cover">
                                                     @else
                                                         <div class="w-10 h-10 bg-zinc-200 dark:bg-zinc-700 rounded-full flex items-center justify-center">

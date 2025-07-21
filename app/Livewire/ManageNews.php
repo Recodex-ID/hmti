@@ -24,7 +24,6 @@ class ManageNews extends Component
     public $published_at = '';
     public $editingNewsId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -44,12 +43,7 @@ class ManageNews extends Component
     #[Computed]
     public function news()
     {
-        return News::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('excerpt', 'like', '%' . $this->search . '%')
-                      ->orWhere('category', 'like', '%' . $this->search . '%');
-            })
-            ->with('author')
+        return News::with('author')
             ->latest()
             ->paginate(10);
     }
@@ -80,7 +74,7 @@ class ManageNews extends Component
         $this->is_published = $news->is_published;
         $this->published_at = $news->published_at?->format('Y-m-d\TH:i');
         $this->featured_image = null;
-        
+
         $this->showModal = true;
     }
 

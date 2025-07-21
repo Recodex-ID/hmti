@@ -18,7 +18,6 @@ class ManageHeroes extends Component
     public $image;
     public $editingHeroId = null;
     public $showModal = false;
-    public $search = '';
 
     public function rules(): array
     {
@@ -34,11 +33,7 @@ class ManageHeroes extends Component
     #[Computed]
     public function heroes()
     {
-        return Hero::when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('subtitle', 'like', '%' . $this->search . '%');
-            })
-            ->latest()
+        return Hero::latest()
             ->paginate(10);
     }
 
@@ -55,7 +50,7 @@ class ManageHeroes extends Component
         $this->title = $hero->title;
         $this->subtitle = $hero->subtitle;
         $this->image = null;
-        
+
         $this->showModal = true;
     }
 
