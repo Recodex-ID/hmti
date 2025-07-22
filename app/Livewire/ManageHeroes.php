@@ -11,12 +11,16 @@ use Livewire\WithPagination;
 
 class ManageHeroes extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $title = '';
+
     public $subtitle = '';
+
     public $image;
+
     public $editingHeroId = null;
+
     public $showModal = false;
 
     public function rules(): array

@@ -11,24 +11,40 @@ use Livewire\WithPagination;
 
 class ManageActivityInformation extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $title = '';
+
     public $description = '';
+
     public $content = '';
+
     public $image_path;
+
     public $location = '';
+
     public $start_date = '';
+
     public $end_date = '';
+
     public $organizer = '';
+
     public $registration_fee = '';
+
     public $registration_deadline = '';
+
     public $requirements = '';
+
     public $contact_person = '';
+
     public $contact_phone = '';
+
     public $contact_email = '';
+
     public $is_active = true;
+
     public $editingActivityInformationId = null;
+
     public $showModal = false;
 
     public function rules(): array
@@ -155,7 +171,7 @@ class ManageActivityInformation extends Component
         $this->reset([
             'title', 'description', 'content', 'image_path', 'location', 'start_date', 'end_date',
             'organizer', 'registration_fee', 'registration_deadline', 'requirements',
-            'contact_person', 'contact_phone', 'contact_email', 'is_active', 'editingActivityInformationId'
+            'contact_person', 'contact_phone', 'contact_email', 'is_active', 'editingActivityInformationId',
         ]);
         $this->resetValidation();
     }

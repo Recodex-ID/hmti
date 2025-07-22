@@ -14,11 +14,17 @@ class ManageUsers extends Component
     use WithPagination;
 
     public $name = '';
+
     public $username = '';
+
     public $email = '';
+
     public $password = '';
+
     public $selectedRoles = [];
+
     public $editingUserId = null;
+
     public $showModal = false;
 
     public function rules(): array
@@ -31,8 +37,8 @@ class ManageUsers extends Component
         ];
 
         if ($this->editingUserId) {
-            $rules['username'] .= '|unique:users,username,' . $this->editingUserId;
-            $rules['email'] .= '|unique:users,email,' . $this->editingUserId;
+            $rules['username'] .= '|unique:users,username,'.$this->editingUserId;
+            $rules['email'] .= '|unique:users,email,'.$this->editingUserId;
             $rules['password'] = 'nullable|string|min:8';
         } else {
             $rules['username'] .= '|unique:users,username';

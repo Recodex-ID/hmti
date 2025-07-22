@@ -81,7 +81,7 @@ class Member extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('end_year')
-              ->orWhere('end_year', '>', now()->year);
+                ->orWhere('end_year', '>', now()->year);
         });
     }
 
@@ -118,7 +118,7 @@ class Member extends Model
         $initials = '';
 
         foreach ($words as $word) {
-            if (!empty($word)) {
+            if (! empty($word)) {
                 $initials .= strtoupper(substr($word, 0, 1));
             }
         }
@@ -132,10 +132,10 @@ class Member extends Model
     public function getPeriodRangeAttribute(): string
     {
         if ($this->end_year) {
-            return $this->start_year . ' - ' . $this->end_year;
+            return $this->start_year.' - '.$this->end_year;
         }
-        
-        return $this->start_year . ' - Present';
+
+        return $this->start_year.' - Present';
     }
 
     /**
@@ -143,7 +143,7 @@ class Member extends Model
      */
     public function isActive(): bool
     {
-        return !$this->end_year || $this->end_year > now()->year;
+        return ! $this->end_year || $this->end_year > now()->year;
     }
 
     /**
@@ -159,6 +159,6 @@ class Member extends Model
      */
     public function hasPhoto(): bool
     {
-        return !empty($this->photo);
+        return ! empty($this->photo);
     }
 }

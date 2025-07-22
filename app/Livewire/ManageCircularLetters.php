@@ -11,16 +11,24 @@ use Livewire\WithPagination;
 
 class ManageCircularLetters extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $title = '';
+
     public $description = '';
+
     public $content = '';
+
     public $file_path;
+
     public $number = '';
+
     public $letter_date = '';
+
     public $is_active = true;
+
     public $editingCircularLetterId = null;
+
     public $showModal = false;
 
     public function rules(): array
@@ -36,7 +44,7 @@ class ManageCircularLetters extends Component
         ];
 
         if ($this->editingCircularLetterId) {
-            $rules['number'] .= '|unique:circular_letters,number,' . $this->editingCircularLetterId;
+            $rules['number'] .= '|unique:circular_letters,number,'.$this->editingCircularLetterId;
         } else {
             $rules['number'] .= '|unique:circular_letters,number';
         }

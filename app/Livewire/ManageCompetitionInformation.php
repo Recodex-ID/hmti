@@ -11,28 +11,48 @@ use Livewire\WithPagination;
 
 class ManageCompetitionInformation extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $title = '';
+
     public $description = '';
+
     public $content = '';
+
     public $image_path;
+
     public $category = '';
+
     public $level = 'Local';
+
     public $start_date = '';
+
     public $end_date = '';
+
     public $organizer = '';
+
     public $registration_fee = '';
+
     public $registration_deadline = '';
+
     public $rules_regulations = '';
+
     public $prizes = '';
+
     public $requirements = '';
+
     public $contact_person = '';
+
     public $contact_phone = '';
+
     public $contact_email = '';
+
     public $website_url = '';
+
     public $is_active = true;
+
     public $editingCompetitionInformationId = null;
+
     public $showModal = false;
 
     public function rules(): array
@@ -178,7 +198,7 @@ class ManageCompetitionInformation extends Component
             'title', 'description', 'content', 'image_path', 'category', 'level', 'start_date', 'end_date',
             'organizer', 'registration_fee', 'registration_deadline', 'rules_regulations', 'prizes',
             'requirements', 'contact_person', 'contact_phone', 'contact_email', 'website_url',
-            'is_active', 'editingCompetitionInformationId'
+            'is_active', 'editingCompetitionInformationId',
         ]);
         $this->resetValidation();
     }

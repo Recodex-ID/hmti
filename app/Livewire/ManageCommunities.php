@@ -11,13 +11,18 @@ use Livewire\WithPagination;
 
 class ManageCommunities extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $title = '';
+
     public $description = '';
+
     public $category = '';
+
     public $logo;
+
     public $editingCommunityId = null;
+
     public $showModal = false;
 
     public function rules(): array
@@ -30,7 +35,7 @@ class ManageCommunities extends Component
         ];
 
         if ($this->editingCommunityId) {
-            $rules['title'] .= '|unique:communities,title,' . $this->editingCommunityId;
+            $rules['title'] .= '|unique:communities,title,'.$this->editingCommunityId;
         } else {
             $rules['title'] .= '|unique:communities,title';
         }

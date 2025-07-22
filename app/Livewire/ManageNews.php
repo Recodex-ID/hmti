@@ -11,18 +11,28 @@ use Livewire\WithPagination;
 
 class ManageNews extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $title = '';
+
     public $excerpt = '';
+
     public $content = '';
+
     public $featured_image;
+
     public $category = '';
+
     public $tags = '';
+
     public $is_featured = false;
+
     public $is_published = true;
+
     public $published_at = '';
+
     public $editingNewsId = null;
+
     public $showModal = false;
 
     public function rules(): array
@@ -137,7 +147,7 @@ class ManageNews extends Component
     {
         $this->reset([
             'title', 'excerpt', 'content', 'featured_image', 'category', 'tags',
-            'is_featured', 'is_published', 'published_at', 'editingNewsId'
+            'is_featured', 'is_published', 'published_at', 'editingNewsId',
         ]);
         $this->resetValidation();
     }

@@ -11,12 +11,16 @@ use Livewire\WithPagination;
 
 class ManageCores extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $name = '';
+
     public $position = '';
+
     public $photo;
+
     public $editingCoreId = null;
+
     public $showModal = false;
 
     public function rules(): array

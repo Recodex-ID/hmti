@@ -163,7 +163,7 @@ class Core extends Model
         $initials = '';
 
         foreach ($words as $word) {
-            if (!empty($word)) {
+            if (! empty($word)) {
                 $initials .= strtoupper(substr($word, 0, 1));
             }
         }
@@ -176,6 +176,6 @@ class Core extends Model
      */
     public function hasPhoto(): bool
     {
-        return !empty($this->photo);
+        return ! empty($this->photo);
     }
 }

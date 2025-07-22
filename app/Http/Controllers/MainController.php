@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CircularLetter;
-use App\Models\ActivityInformation;
-use App\Models\CompetitionInformation;
-use App\Models\News;
-use App\Models\Hero;
 use App\Models\About;
-use Illuminate\Http\Request;
+use App\Models\ActivityInformation;
+use App\Models\CircularLetter;
+use App\Models\CompetitionInformation;
+use App\Models\Hero;
+use App\Models\News;
 
 class MainController extends Controller
 {
@@ -17,7 +16,7 @@ class MainController extends Controller
         // Ambil data terbaru untuk homepage
         $heroes = Hero::latest()->get();
         $about = About::current();
-        
+
         $circularLetters = CircularLetter::where('is_active', true)
             ->orderBy('letter_date', 'desc')
             ->limit(3)
@@ -50,7 +49,7 @@ class MainController extends Controller
             'heroes',
             'about',
             'circularLetters',
-            'activities', 
+            'activities',
             'competitions',
             'featuredNews',
             'news'

@@ -17,7 +17,7 @@ class UsersAndRolesSeeder extends Seeder
             'Admin',
             'Kahim',
             'Wakahim',
-            'Kadep'
+            'Kadep',
         ];
 
         foreach ($roles as $role) {
