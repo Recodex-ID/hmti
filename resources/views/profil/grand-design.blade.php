@@ -25,12 +25,18 @@
                     <p class="text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto">
                         Dokumen strategis yang memuat visi, misi, dan rencana pengembangan HMTI hingga tahun 2025
                     </p>
-                    <a href="#" class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        Download Grand Design
-                    </a>
+                    @if($about && $about->hasGrandDesign())
+                        <a href="{{ $about->grand_design_url }}" target="_blank" class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Download Grand Design
+                        </a>
+                    @else
+                        <div class="p-4 bg-zinc-100 dark:bg-zinc-700 rounded-lg">
+                            <p class="text-zinc-600 dark:text-zinc-400">Grand Design 2025 belum tersedia</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

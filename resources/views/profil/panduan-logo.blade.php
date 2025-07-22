@@ -27,7 +27,24 @@
 
                 <!-- Download Section -->
                 <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-8">
-                    <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Download Asset Logo</h3>
+                    <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Download Panduan Logo</h3>
+                    
+                    @if($about && $about->hasLogoGuideline())
+                        <div class="text-center mb-6">
+                            <a href="{{ $about->logo_guideline_url }}" target="_blank" class="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                Download Panduan Logo PDF
+                            </a>
+                        </div>
+                    @else
+                        <div class="text-center mb-6 p-4 bg-zinc-100 dark:bg-zinc-700 rounded-lg">
+                            <p class="text-zinc-600 dark:text-zinc-400">Panduan logo belum tersedia</p>
+                        </div>
+                    @endif
+
+                    <h4 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Asset Logo Lainnya</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <a href="#" class="flex items-center p-4 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition">
                             <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">

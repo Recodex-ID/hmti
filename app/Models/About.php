@@ -21,6 +21,10 @@ class About extends Model
         'banner',
         'link_youtube',
         'ad_art',
+        'logo_guideline',
+        'grand_design',
+        'anniversary_content',
+        'history_content',
     ];
 
     /**
@@ -30,6 +34,8 @@ class About extends Model
      */
     protected $casts = [
         'mission' => 'array',
+        'anniversary_content' => 'array',
+        'history_content' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -71,12 +77,12 @@ class About extends Model
      */
     public function getFormattedMissionAttribute(): string
     {
-        if (!is_array($this->mission)) {
+        if (! is_array($this->mission)) {
             return '';
         }
 
         return implode("\n", array_map(function ($mission, $index) {
-            return ($index + 1) . '. ' . $mission;
+            return ($index + 1).'. '.$mission;
         }, $this->mission, array_keys($this->mission)));
     }
 
@@ -86,7 +92,7 @@ class About extends Model
     public function getShortDefinitionAttribute(): string
     {
         return strlen($this->definition) > 200
-            ? substr($this->definition, 0, 200) . '...'
+            ? substr($this->definition, 0, 200).'...'
             : $this->definition;
     }
 
@@ -96,7 +102,7 @@ class About extends Model
     public function getShortVisionAttribute(): string
     {
         return strlen($this->vision) > 150
-            ? substr($this->vision, 0, 150) . '...'
+            ? substr($this->vision, 0, 150).'...'
             : $this->vision;
     }
 
@@ -105,7 +111,7 @@ class About extends Model
      */
     public function hasStructuralImage(): bool
     {
-        return !empty($this->structural);
+        return ! empty($this->structural);
     }
 
     /**
@@ -129,7 +135,7 @@ class About extends Model
      */
     public function hasAdArt(): bool
     {
-        return !empty($this->ad_art);
+        return ! empty($this->ad_art);
     }
 
     /**
@@ -153,7 +159,7 @@ class About extends Model
      */
     public function hasBanner(): bool
     {
-        return !empty($this->banner);
+        return ! empty($this->banner);
     }
 
     /**
@@ -161,7 +167,7 @@ class About extends Model
      */
     public function hasYoutubeLink(): bool
     {
-        return !empty($this->link_youtube);
+        return ! empty($this->link_youtube);
     }
 
     /**
@@ -169,13 +175,13 @@ class About extends Model
      */
     public function getYoutubeVideoIdAttribute(): ?string
     {
-        if (!$this->link_youtube) {
+        if (! $this->link_youtube) {
             return null;
         }
 
         // Extract video ID from various YouTube URL formats
         preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $this->link_youtube, $matches);
-        
+
         return $matches[1] ?? null;
     }
 
@@ -185,7 +191,7 @@ class About extends Model
     public function getYoutubeEmbedUrlAttribute(): ?string
     {
         $videoId = $this->youtube_video_id;
-        
+
         return $videoId ? "https://www.youtube.com/embed/{$videoId}" : null;
     }
 
@@ -195,7 +201,55 @@ class About extends Model
     public function getYoutubeThumbnailUrlAttribute(): ?string
     {
         $videoId = $this->youtube_video_id;
-        
+
         return $videoId ? "https://img.youtube.com/vi/{$videoId}/maxresdefault.jpg" : null;
+    }
+
+    /**
+     * Get the logo guideline PDF URL.
+     */
+    public function getLogoGuidelineUrlAttribute(): ?string
+    {
+        return $this->logo_guideline ? Storage::url($this->logo_guideline) : null;
+    }
+
+    /**
+     * Check if about has logo guideline PDF.
+     */
+    public function hasLogoGuideline(): bool
+    {
+        return ! empty($this->logo_guideline);
+    }
+
+    /**
+     * Get the grand design PDF URL.
+     */
+    public function getGrandDesignUrlAttribute(): ?string
+    {
+        return $this->grand_design ? Storage::url($this->grand_design) : null;
+    }
+
+    /**
+     * Check if about has grand design PDF.
+     */
+    public function hasGrandDesign(): bool
+    {
+        return ! empty($this->grand_design);
+    }
+
+    /**
+     * Check if about has anniversary content.
+     */
+    public function hasAnniversaryContent(): bool
+    {
+        return is_array($this->anniversary_content) && count($this->anniversary_content) > 0;
+    }
+
+    /**
+     * Check if about has history content.
+     */
+    public function hasHistoryContent(): bool
+    {
+        return is_array($this->history_content) && count($this->history_content) > 0;
     }
 }

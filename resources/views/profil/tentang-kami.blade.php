@@ -15,38 +15,71 @@
         <!-- Content Section -->
         <div class="container mx-auto px-4 py-12">
             <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Definisi -->
+                @if($about && $about->definition)
+                <div class="bg-white dark:bg-zinc-800 rounded-xl p-8 shadow-sm border border-zinc-200 dark:border-zinc-700">
+                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4">Definisi HMTI</h2>
+                    <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed">{{ $about->definition }}</p>
+                </div>
+                @endif
+
+                <!-- Kedudukan dan Peran -->
+                @if($about && $about->position_role)
+                <div class="bg-white dark:bg-zinc-800 rounded-xl p-8 shadow-sm border border-zinc-200 dark:border-zinc-700">
+                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4">Kedudukan dan Peran</h2>
+                    <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed">{{ $about->position_role }}</p>
+                </div>
+                @endif
+
                 <!-- Visi Misi -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Visi -->
                     <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-8">
                         <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 text-center">Visi</h2>
-                        <p class="text-zinc-700 dark:text-zinc-300 text-center leading-relaxed">
-                            "Menjadikan HMTI sebagai wadah pengembangan diri mahasiswa Teknik Industri yang unggul, 
-                            inovatif, dan berkontribusi nyata bagi masyarakat serta industri."
-                        </p>
+                        @if($about && $about->vision)
+                            <p class="text-zinc-700 dark:text-zinc-300 text-center leading-relaxed">
+                                "{{ $about->vision }}"
+                            </p>
+                        @else
+                            <p class="text-zinc-700 dark:text-zinc-300 text-center leading-relaxed">
+                                "Menjadikan HMTI sebagai wadah pengembangan diri mahasiswa Teknik Industri yang unggul, 
+                                inovatif, dan berkontribusi nyata bagi masyarakat serta industri."
+                            </p>
+                        @endif
                     </div>
 
                     <!-- Misi -->
                     <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-8">
                         <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 text-center">Misi</h2>
-                        <ul class="space-y-3 text-zinc-700 dark:text-zinc-300">
-                            <li class="flex items-start gap-3">
-                                <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
-                                <span>Mengembangkan potensi akademik dan non-akademik mahasiswa</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
-                                <span>Membangun jiwa kepemimpinan dan kewirausahaan</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
-                                <span>Menciptakan inovasi yang bermanfaat bagi industri</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
-                                <span>Mempererat tali silaturahmi antar mahasiswa</span>
-                            </li>
-                        </ul>
+                        @if($about && $about->mission && is_array($about->mission) && count($about->mission) > 0)
+                            <ul class="space-y-3 text-zinc-700 dark:text-zinc-300">
+                                @foreach($about->mission as $missionItem)
+                                <li class="flex items-start gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                                    <span>{{ $missionItem }}</span>
+                                </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <ul class="space-y-3 text-zinc-700 dark:text-zinc-300">
+                                <li class="flex items-start gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                                    <span>Mengembangkan potensi akademik dan non-akademik mahasiswa</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                                    <span>Membangun jiwa kepemimpinan dan kewirausahaan</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                                    <span>Menciptakan inovasi yang bermanfaat bagi industri</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                                    <span>Mempererat tali silaturahmi antar mahasiswa</span>
+                                </li>
+                            </ul>
+                        @endif
                     </div>
                 </div>
 

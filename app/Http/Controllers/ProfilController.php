@@ -2,37 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\About;
 
 class ProfilController extends Controller
 {
     public function tentangKami()
     {
-        return view('profil.tentang-kami');
+        $about = About::current();
+
+        return view('profil.tentang-kami', compact('about'));
     }
 
     public function adArt()
     {
-        return view('profil.ad-art');
+        $about = About::current();
+
+        return view('profil.ad-art', compact('about'));
     }
 
     public function panduanLogo()
     {
-        return view('profil.panduan-logo');
+        $about = About::current();
+
+        return view('profil.panduan-logo', compact('about'));
     }
 
     public function grandDesign()
     {
-        return view('profil.grand-design');
+        $about = About::current();
+
+        return view('profil.grand-design', compact('about'));
     }
 
     public function hutHmti()
     {
-        return view('profil.hut-hmti');
+        $about = About::current();
+
+        return view('profil.hut-hmti', compact('about'));
     }
 
     public function sejarah()
     {
-        return view('profil.sejarah');
+        $about = About::current();
+
+        return view('profil.sejarah', compact('about'));
     }
 }

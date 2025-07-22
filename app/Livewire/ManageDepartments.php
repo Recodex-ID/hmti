@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Agenda;
 use App\Models\Department;
 use App\Models\DepartmentFunction;
-use App\Models\WorkProgram;
-use App\Models\Agenda;
 use App\Models\Member;
+use App\Models\WorkProgram;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -15,14 +15,19 @@ use Livewire\WithPagination;
 
 class ManageDepartments extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     // Department properties
     public $title = '';
+
     public $description = '';
+
     public $division = '';
+
     public $logo;
+
     public $editingDepartmentId = null;
+
     public $showModal = false;
 
     // Tab management
@@ -30,28 +35,42 @@ class ManageDepartments extends Component
 
     // Function properties
     public $functionTitle = '';
+
     public $editingFunctionId = null;
+
     public $functions = [];
 
     // Work Program properties
     public $programTitle = '';
+
     public $programDescription = '';
+
     public $editingProgramId = null;
+
     public $workPrograms = [];
 
     // Agenda properties
     public $agendaTitle = '';
+
     public $agendaDescription = '';
+
     public $editingAgendaId = null;
+
     public $agendas = [];
 
     // Member properties
     public $memberName = '';
+
     public $memberPosition = '';
+
     public $memberPhoto;
+
     public $memberStartYear = '';
+
     public $memberEndYear = '';
+
     public $editingMemberId = null;
+
     public $members = [];
 
     public function rules(): array
@@ -77,12 +96,12 @@ class ManageDepartments extends Component
             'memberName' => 'required|string|max:255',
             'memberPosition' => 'required|string|in:head,staff',
             'memberPhoto' => 'nullable|image|max:2048',
-            'memberStartYear' => 'required|integer|min:2000|max:' . ((int)date('Y') + 10),
-            'memberEndYear' => 'nullable|integer|min:2000|max:' . ((int)date('Y') + 10) . '|gte:memberStartYear',
+            'memberStartYear' => 'required|integer|min:2000|max:'.((int) date('Y') + 10),
+            'memberEndYear' => 'nullable|integer|min:2000|max:'.((int) date('Y') + 10).'|gte:memberStartYear',
         ];
 
         if ($this->editingDepartmentId) {
-            $rules['title'] .= '|unique:departments,title,' . $this->editingDepartmentId;
+            $rules['title'] .= '|unique:departments,title,'.$this->editingDepartmentId;
         } else {
             $rules['title'] .= '|unique:departments,title';
         }
@@ -130,7 +149,7 @@ class ManageDepartments extends Component
     public function save()
     {
         $this->validate([
-            'title' => 'required|string|max:255' . ($this->editingDepartmentId ? '|unique:departments,title,' . $this->editingDepartmentId : '|unique:departments,title'),
+            'title' => 'required|string|max:255'.($this->editingDepartmentId ? '|unique:departments,title,'.$this->editingDepartmentId : '|unique:departments,title'),
             'description' => 'nullable|string',
             'division' => 'required|string|in:Internal,PSTI,Eksternal',
             'logo' => 'nullable|image|max:2048',
@@ -206,7 +225,7 @@ class ManageDepartments extends Component
             'functions', 'functionTitle', 'editingFunctionId',
             'workPrograms', 'programTitle', 'programDescription', 'editingProgramId',
             'agendas', 'agendaTitle', 'agendaDescription', 'editingAgendaId',
-            'members', 'memberName', 'memberPosition', 'memberPhoto', 'memberStartYear', 'memberEndYear', 'editingMemberId'
+            'members', 'memberName', 'memberPosition', 'memberPhoto', 'memberStartYear', 'memberEndYear', 'editingMemberId',
         ]);
     }
 
@@ -223,16 +242,17 @@ class ManageDepartments extends Component
     {
         $this->validateOnly('functionTitle');
 
-        if (!$this->editingDepartmentId) {
+        if (! $this->editingDepartmentId) {
             $this->addError('functionTitle', 'Simpan departemen terlebih dahulu sebelum menambah fungsi.');
+
             return;
         }
 
         $this->functions[] = [
-            'id' => $this->editingFunctionId ?: 'new_' . count($this->functions),
+            'id' => $this->editingFunctionId ?: 'new_'.count($this->functions),
             'title' => $this->functionTitle,
             'department_id' => $this->editingDepartmentId,
-            'is_new' => !$this->editingFunctionId
+            'is_new' => ! $this->editingFunctionId,
         ];
 
         $this->reset(['functionTitle', 'editingFunctionId']);
@@ -247,7 +267,7 @@ class ManageDepartments extends Component
 
     public function removeFunction($index)
     {
-        if (isset($this->functions[$index]['id']) && !str_starts_with($this->functions[$index]['id'], 'new_')) {
+        if (isset($this->functions[$index]['id']) && ! str_starts_with($this->functions[$index]['id'], 'new_')) {
             $this->functions[$index]['_delete'] = true;
         } else {
             unset($this->functions[$index]);
@@ -260,17 +280,18 @@ class ManageDepartments extends Component
     {
         $this->validateOnly('programTitle');
 
-        if (!$this->editingDepartmentId) {
+        if (! $this->editingDepartmentId) {
             $this->addError('programTitle', 'Simpan departemen terlebih dahulu sebelum menambah program kerja.');
+
             return;
         }
 
         $this->workPrograms[] = [
-            'id' => $this->editingProgramId ?: 'new_' . count($this->workPrograms),
+            'id' => $this->editingProgramId ?: 'new_'.count($this->workPrograms),
             'title' => $this->programTitle,
             'description' => $this->programDescription,
             'department_id' => $this->editingDepartmentId,
-            'is_new' => !$this->editingProgramId
+            'is_new' => ! $this->editingProgramId,
         ];
 
         $this->reset(['programTitle', 'programDescription', 'editingProgramId']);
@@ -286,7 +307,7 @@ class ManageDepartments extends Component
 
     public function removeWorkProgram($index)
     {
-        if (isset($this->workPrograms[$index]['id']) && !str_starts_with($this->workPrograms[$index]['id'], 'new_')) {
+        if (isset($this->workPrograms[$index]['id']) && ! str_starts_with($this->workPrograms[$index]['id'], 'new_')) {
             $this->workPrograms[$index]['_delete'] = true;
         } else {
             unset($this->workPrograms[$index]);
@@ -299,17 +320,18 @@ class ManageDepartments extends Component
     {
         $this->validateOnly('agendaTitle');
 
-        if (!$this->editingDepartmentId) {
+        if (! $this->editingDepartmentId) {
             $this->addError('agendaTitle', 'Simpan departemen terlebih dahulu sebelum menambah agenda.');
+
             return;
         }
 
         $this->agendas[] = [
-            'id' => $this->editingAgendaId ?: 'new_' . count($this->agendas),
+            'id' => $this->editingAgendaId ?: 'new_'.count($this->agendas),
             'title' => $this->agendaTitle,
             'description' => $this->agendaDescription,
             'department_id' => $this->editingDepartmentId,
-            'is_new' => !$this->editingAgendaId
+            'is_new' => ! $this->editingAgendaId,
         ];
 
         $this->reset(['agendaTitle', 'agendaDescription', 'editingAgendaId']);
@@ -325,7 +347,7 @@ class ManageDepartments extends Component
 
     public function removeAgenda($index)
     {
-        if (isset($this->agendas[$index]['id']) && !str_starts_with($this->agendas[$index]['id'], 'new_')) {
+        if (isset($this->agendas[$index]['id']) && ! str_starts_with($this->agendas[$index]['id'], 'new_')) {
             $this->agendas[$index]['_delete'] = true;
         } else {
             unset($this->agendas[$index]);
@@ -340,23 +362,24 @@ class ManageDepartments extends Component
             'memberName' => 'required|string|max:255',
             'memberPosition' => 'required|string|in:head,staff',
             'memberPhoto' => 'nullable|image|max:2048',
-            'memberStartYear' => 'required|integer|min:2000|max:' . ((int)date('Y') + 10),
-            'memberEndYear' => 'nullable|integer|min:2000|max:' . ((int)date('Y') + 10) . '|gte:memberStartYear',
+            'memberStartYear' => 'required|integer|min:2000|max:'.((int) date('Y') + 10),
+            'memberEndYear' => 'nullable|integer|min:2000|max:'.((int) date('Y') + 10).'|gte:memberStartYear',
         ]);
 
-        if (!$this->editingDepartmentId) {
+        if (! $this->editingDepartmentId) {
             $this->addError('memberName', 'Simpan departemen terlebih dahulu sebelum menambah anggota.');
+
             return;
         }
 
         $memberData = [
-            'id' => $this->editingMemberId ?: 'new_' . count($this->members),
+            'id' => $this->editingMemberId ?: 'new_'.count($this->members),
             'name' => $this->memberName,
             'position' => $this->memberPosition,
             'start_year' => $this->memberStartYear,
             'end_year' => $this->memberEndYear,
             'department_id' => $this->editingDepartmentId,
-            'is_new' => !$this->editingMemberId
+            'is_new' => ! $this->editingMemberId,
         ];
 
         if ($this->memberPhoto) {
@@ -382,7 +405,7 @@ class ManageDepartments extends Component
 
     public function removeMember($index)
     {
-        if (isset($this->members[$index]['id']) && !str_starts_with($this->members[$index]['id'], 'new_')) {
+        if (isset($this->members[$index]['id']) && ! str_starts_with($this->members[$index]['id'], 'new_')) {
             $this->members[$index]['_delete'] = true;
         } else {
             unset($this->members[$index]);
@@ -395,17 +418,17 @@ class ManageDepartments extends Component
         // Save Functions
         foreach ($this->functions as $function) {
             if (isset($function['_delete']) && $function['_delete']) {
-                if (!str_starts_with($function['id'], 'new_')) {
+                if (! str_starts_with($function['id'], 'new_')) {
                     DepartmentFunction::find($function['id'])?->delete();
                 }
             } elseif (isset($function['is_new']) && $function['is_new']) {
                 DepartmentFunction::create([
                     'department_id' => $departmentId,
-                    'title' => $function['title']
+                    'title' => $function['title'],
                 ]);
-            } elseif (!str_starts_with($function['id'], 'new_')) {
+            } elseif (! str_starts_with($function['id'], 'new_')) {
                 DepartmentFunction::find($function['id'])?->update([
-                    'title' => $function['title']
+                    'title' => $function['title'],
                 ]);
             }
         }
@@ -413,19 +436,19 @@ class ManageDepartments extends Component
         // Save Work Programs
         foreach ($this->workPrograms as $program) {
             if (isset($program['_delete']) && $program['_delete']) {
-                if (!str_starts_with($program['id'], 'new_')) {
+                if (! str_starts_with($program['id'], 'new_')) {
                     WorkProgram::find($program['id'])?->delete();
                 }
             } elseif (isset($program['is_new']) && $program['is_new']) {
                 WorkProgram::create([
                     'department_id' => $departmentId,
                     'title' => $program['title'],
-                    'description' => $program['description']
+                    'description' => $program['description'],
                 ]);
-            } elseif (!str_starts_with($program['id'], 'new_')) {
+            } elseif (! str_starts_with($program['id'], 'new_')) {
                 WorkProgram::find($program['id'])?->update([
                     'title' => $program['title'],
-                    'description' => $program['description']
+                    'description' => $program['description'],
                 ]);
             }
         }
@@ -433,19 +456,19 @@ class ManageDepartments extends Component
         // Save Agendas
         foreach ($this->agendas as $agenda) {
             if (isset($agenda['_delete']) && $agenda['_delete']) {
-                if (!str_starts_with($agenda['id'], 'new_')) {
+                if (! str_starts_with($agenda['id'], 'new_')) {
                     Agenda::find($agenda['id'])?->delete();
                 }
             } elseif (isset($agenda['is_new']) && $agenda['is_new']) {
                 Agenda::create([
                     'department_id' => $departmentId,
                     'title' => $agenda['title'],
-                    'description' => $agenda['description']
+                    'description' => $agenda['description'],
                 ]);
-            } elseif (!str_starts_with($agenda['id'], 'new_')) {
+            } elseif (! str_starts_with($agenda['id'], 'new_')) {
                 Agenda::find($agenda['id'])?->update([
                     'title' => $agenda['title'],
-                    'description' => $agenda['description']
+                    'description' => $agenda['description'],
                 ]);
             }
         }
@@ -453,7 +476,7 @@ class ManageDepartments extends Component
         // Save Members
         foreach ($this->members as $member) {
             if (isset($member['_delete']) && $member['_delete']) {
-                if (!str_starts_with($member['id'], 'new_')) {
+                if (! str_starts_with($member['id'], 'new_')) {
                     $existingMember = Member::find($member['id']);
                     if ($existingMember && $existingMember->photo) {
                         Storage::delete($existingMember->photo);
@@ -466,7 +489,7 @@ class ManageDepartments extends Component
                     'name' => $member['name'],
                     'position' => $member['position'],
                     'start_year' => $member['start_year'],
-                    'end_year' => $member['end_year']
+                    'end_year' => $member['end_year'] ?: null,
                 ];
 
                 if (isset($member['photo'])) {
@@ -474,12 +497,12 @@ class ManageDepartments extends Component
                 }
 
                 Member::create($memberData);
-            } elseif (!str_starts_with($member['id'], 'new_')) {
+            } elseif (! str_starts_with($member['id'], 'new_')) {
                 $memberData = [
                     'name' => $member['name'],
                     'position' => $member['position'],
                     'start_year' => $member['start_year'],
-                    'end_year' => $member['end_year']
+                    'end_year' => $member['end_year'] ?: null,
                 ];
 
                 if (isset($member['photo'])) {
