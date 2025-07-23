@@ -2,20 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partnership;
+
 class PartnershipController extends Controller
 {
     public function benchmark()
     {
-        return view('partnership.benchmark');
+        $partnership = Partnership::getByType('benchmark');
+
+        return view('partnership.benchmark', compact('partnership'));
     }
 
     public function mediaPartner()
     {
-        return view('partnership.media-partner');
+        $partnership = Partnership::getByType('media_partner');
+
+        return view('partnership.media-partner', compact('partnership'));
     }
 
     public function mcModerator()
     {
-        return view('partnership.mc-moderator');
+        $partnership = Partnership::getByType('mc_moderator');
+
+        return view('partnership.mc-moderator', compact('partnership'));
     }
 }

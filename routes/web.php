@@ -54,6 +54,12 @@ Route::middleware(['auth'])->group(function () {
     // About Management Routes
     Route::get('/about', \App\Livewire\ManageAbout::class)->name('about');
 
+    // Partnership Management Routes
+    Route::get('/partnerships', \App\Livewire\ManagePartnerships::class)->name('partnerships');
+
+    // MPM Management Routes
+    Route::get('/mpms', \App\Livewire\ManageMpms::class)->name('mpms');
+
     // Information Management Routes
     Route::get('/circular-letters', \App\Livewire\ManageCircularLetters::class)->name('circular-letters');
     Route::get('/activity-information', \App\Livewire\ManageActivityInformation::class)->name('activity-information');

@@ -2,25 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mpm;
+
 class MpmController extends Controller
 {
     public function komisiA()
     {
-        return view('mpm.komisi-a');
+        $mpm = Mpm::getByType('komisi-a');
+        return view('mpm.komisi-a', compact('mpm'));
     }
 
     public function komisiB()
     {
-        return view('mpm.komisi-b');
+        $mpm = Mpm::getByType('komisi-b');
+        return view('mpm.komisi-b', compact('mpm'));
     }
 
     public function komisiC()
     {
-        return view('mpm.komisi-c');
+        $mpm = Mpm::getByType('komisi-c');
+        return view('mpm.komisi-c', compact('mpm'));
     }
 
     public function burt()
     {
-        return view('mpm.burt');
+        $mpm = Mpm::getByType('burt');
+        return view('mpm.burt', compact('mpm'));
     }
 }
