@@ -35,4 +35,12 @@ class WorkProgram extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    /**
+     * Check if work program has description.
+     */
+    public function hasDescription(): bool
+    {
+        return ! empty($this->description);
+    }
 }

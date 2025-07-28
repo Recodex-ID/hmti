@@ -141,4 +141,60 @@ class Department extends Model
     {
         return $this->hasMany(Member::class)->head();
     }
+
+    /**
+     * Check if department has logo.
+     */
+    public function hasLogo(): bool
+    {
+        return ! empty($this->logo);
+    }
+
+    /**
+     * Check if department has description.
+     */
+    public function hasDescription(): bool
+    {
+        return ! empty($this->description);
+    }
+
+    /**
+     * Check if department has functions.
+     */
+    public function hasFunctions(): bool
+    {
+        return $this->departmentFunctions()->count() > 0;
+    }
+
+    /**
+     * Check if department has work programs.
+     */
+    public function hasWorkPrograms(): bool
+    {
+        return $this->workPrograms()->count() > 0;
+    }
+
+    /**
+     * Check if department has agendas.
+     */
+    public function hasAgendas(): bool
+    {
+        return $this->agendas()->count() > 0;
+    }
+
+    /**
+     * Check if department has active members.
+     */
+    public function hasActiveMembers(): bool
+    {
+        return $this->activeMembers()->count() > 0;
+    }
+
+    /**
+     * Check if department has head members.
+     */
+    public function hasHeadMembers(): bool
+    {
+        return $this->headMembers()->count() > 0;
+    }
 }
