@@ -29,6 +29,7 @@
                     <flux:navlist.item icon="user-circle" :href="route('cores')" :current="request()->routeIs('cores')" wire:navigate>Pengurus Inti</flux:navlist.item>
                     <flux:navlist.item icon="building-office" :href="route('departments')" :current="request()->routeIs('departments')" wire:navigate>Departemen & Biro</flux:navlist.item>
                     <flux:navlist.item icon="user-group" :href="route('communities')" :current="request()->routeIs('communities')" wire:navigate>Community & Committee</flux:navlist.item>
+                    <flux:navlist.item icon="academic-cap" :href="route('partnerships')" :current="request()->routeIs('partnerships')" wire:navigate>Partnership</flux:navlist.item>
                     <flux:navlist.item icon="scale" :href="route('mpms')" :current="request()->routeIs('mpms')" wire:navigate>MPM</flux:navlist.item>
                 </flux:navlist.group>
 
