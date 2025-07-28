@@ -10,7 +10,7 @@
                             <img src="{{ $department->logo_url }}" alt="{{ $department->title }}" class="w-24 h-24 lg:w-32 lg:h-32 rounded-full border-4 border-white/20">
                         </div>
                     @endif
-                    
+
                     <!-- Informasi Departemen -->
                     <div class="text-center lg:text-left">
                         <h1 class="text-3xl lg:text-4xl font-bold mb-2">{{ $department->title }}</h1>
@@ -36,7 +36,7 @@
                                 @foreach($department->departmentFunctions as $function)
                                     <div class="flex items-start gap-3">
                                         <div class="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div>
-                                        <p class="text-zinc-700 dark:text-zinc-300">{{ $function->description }}</p>
+                                        <p class="text-zinc-700 dark:text-zinc-300">{{ $function->title }}</p>
                                     </div>
                                 @endforeach
                             </div>
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                
+
                                 @if($department->activeMembers->count() > 5)
                                     <p class="text-sm text-zinc-500 dark:text-zinc-400 text-center pt-2">
                                         dan {{ $department->activeMembers->count() - 5 }} anggota lainnya
