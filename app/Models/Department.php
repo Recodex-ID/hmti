@@ -197,4 +197,28 @@ class Department extends Model
     {
         return $this->headMembers()->count() > 0;
     }
+
+    /**
+     * Get staff members for the department (excluding heads).
+     */
+    public function staffMembers(): HasMany
+    {
+        return $this->hasMany(Member::class)->staff();
+    }
+
+    /**
+     * Get active staff members for the department (excluding heads).
+     */
+    public function activeStaffMembers(): HasMany
+    {
+        return $this->hasMany(Member::class)->active()->staff();
+    }
+
+    /**
+     * Check if department has active staff members.
+     */
+    public function hasActiveStaffMembers(): bool
+    {
+        return $this->activeStaffMembers()->count() > 0;
+    }
 }

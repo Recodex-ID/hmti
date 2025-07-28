@@ -14,6 +14,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersAndRolesSeeder::class,
             DepartmentSeeder::class,
+            DepartmentFunctionSeeder::class,
+            MemberSeeder::class,
+            WorkProgramSeeder::class,
+            AgendaSeeder::class,
             CommunitySeeder::class,
             AboutSeeder::class,
             CoreSeeder::class,
@@ -22,6 +26,8 @@ class DatabaseSeeder extends Seeder
             ActivityInformationSeeder::class,
             CompetitionInformationSeeder::class,
             NewsSeeder::class,
+            MpmSeeder::class,
+            PartnershipSeeder::class,
         ]);
     }
 }
